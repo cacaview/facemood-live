@@ -1,27 +1,8 @@
 {
   "url": "https://106.53.199.187:8443/",
-  "startedAt": "2026-10-20T14:27:39.088Z",
-  "status": "passed",
+  "startedAt": "2026-10-20T15:05:03.378Z",
+  "status": "failed",
   "environment": "macOS headless Chromium, not target-device acceptance",
-  "transport": "SSH-forwarded private verification; public port reachability NOT validated",
-  "secureContext": true,
-  "localModel": {
-    "sha256": "a2a2ba6a335a3b29c21acb6272f962bd3d47f84952aaffa03b60986e04efa61c",
-    "bytes": 35040571
-  },
-  "samplePrediction": "开心",
-  "modelRequests": {
-    "downloads": 1,
-    "manifests": 2,
-    "localReuse": true
-  },
-  "permissionRecoveryPrompt": true,
-  "mobileLayout": true,
-  "pageErrors": [],
-  "version": {
-    "release": "20261020-222022-8575489b",
-    "commit": "8575489bac6f142bf5645fcbc2432ba8c2802252",
-    "model_sha256": "a2a2ba6a335a3b29c21acb6272f962bd3d47f84952aaffa03b60986e04efa61c"
-  },
-  "endedAt": "2026-10-20T14:28:05.714Z"
+  "error": "Error: expect(locator).toContainText(expected) failed\n\nLocator: getByRole('status')\nExpected substring: \"模型已就绪\"\nReceived string:    \"需要处理  加载 / 重试模型 \"\nTimeout: 150000ms\n\nCall log:\n  - Expect \"to.have.text\" with timeout 150000ms\n  - waiting for getByRole('status')\n    5 × locator resolved to <div role=\"status\" class=\"status\">…</div>\n      - unexpected value \"正在检查模型版本… 首次加载可能需要稍候\"\n    - locator resolved to <div role=\"status\" class=\"status\">…</div>\n    - unexpected value \"正在检查网站上的模型版本… 首次加载可能需要稍候\"\n    87 × locator resolved to <div role=\"status\" class=\"status\">…</div>\n       - unexpected value \"首次使用，正在下载模型… 首次加载可能需要稍候\"\n    60 × locator resolved to <div role=\"status\" class=\"status\">…</div>\n       - unexpected value \"需要处理  加载 / 重试模型 \"\n",
+  "endedAt": "2026-10-20T15:07:38.529Z"
 }

@@ -10,7 +10,7 @@ npm run build:server
 python3 scripts/deploy_server.py --identity /path/to/private-key.pem --skip-build
 ```
 
-Prerequisites: reviewed root SSH access and existing nginx/certificate. First connection must establish the expected SSH host key; deploy script requires StrictHostKeyChecking=yes. The deployment does not clone the private GitHub repository or place GitHub tokens on the server.
+Prerequisites: reviewed root SSH access and existing nginx/certificate. First connection must establish the expected SSH host key; deploy script requires StrictHostKeyChecking=yes. The deployment does not clone the GitHub repository or place GitHub tokens on the server.
 
 Versioned release: `/var/www/facemood/releases/<timestamp-commit>/site`; active symlink `/var/www/facemood/current`. Config `/etc/nginx/sites-available/facemood.conf`, linked from sites-enabled. Backups `/var/backups/facemood/<release>/` record previous config, firewall configuration and release target. Only TCP 8443 is added to the existing nftables policy, both live and persistent; existing rules are not flushed. Nginx configuration is validated before graceful reload. Installation failure restores the previous app/config and removes only the new firewall rule.
 
