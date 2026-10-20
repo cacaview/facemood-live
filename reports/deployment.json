@@ -1,0 +1,12 @@
+{
+  "release": "20261020-222022-8575489b",
+  "current": "/var/www/facemood/releases/20261020-222022-8575489b/site",
+  "previous": null,
+  "backup": "/var/backups/facemood/20261020-222022-8575489b",
+  "port": 8443,
+  "url": "https://106.53.199.187:8443/",
+  "existing_site": "unchanged",
+  "vllm": "not accessed",
+  "source_commit": "8575489bac6f142bf5645fcbc2432ba8c2802252",
+  "archive_sha256": "14a95b1eb6f08ca800611a7b168bec10660625edf0b277f439b11b300bbc7826"
+}

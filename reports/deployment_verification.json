@@ -1,0 +1,27 @@
+{
+  "url": "https://106.53.199.187:8443/",
+  "startedAt": "2026-10-20T14:27:39.088Z",
+  "status": "passed",
+  "environment": "macOS headless Chromium, not target-device acceptance",
+  "transport": "SSH-forwarded private verification; public port reachability NOT validated",
+  "secureContext": true,
+  "localModel": {
+    "sha256": "a2a2ba6a335a3b29c21acb6272f962bd3d47f84952aaffa03b60986e04efa61c",
+    "bytes": 35040571
+  },
+  "samplePrediction": "开心",
+  "modelRequests": {
+    "downloads": 1,
+    "manifests": 2,
+    "localReuse": true
+  },
+  "permissionRecoveryPrompt": true,
+  "mobileLayout": true,
+  "pageErrors": [],
+  "version": {
+    "release": "20261020-222022-8575489b",
+    "commit": "8575489bac6f142bf5645fcbc2432ba8c2802252",
+    "model_sha256": "a2a2ba6a335a3b29c21acb6272f962bd3d47f84952aaffa03b60986e04efa61c"
+  },
+  "endedAt": "2026-10-20T14:28:05.714Z"
+}

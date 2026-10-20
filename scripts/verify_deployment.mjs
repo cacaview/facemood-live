@@ -7,7 +7,14 @@ const record = {
   status: "running",
   environment: "macOS headless Chromium, not target-device acceptance",
 };
-const browser = await chromium.launch({ headless: true });
+const proxy = process.env.FACEMOOD_VERIFY_PROXY;
+if (proxy)
+  record.transport =
+    "SSH-forwarded private verification; public port reachability NOT validated";
+const browser = await chromium.launch({
+  headless: true,
+  ...(proxy ? { proxy: { server: proxy } } : {}),
+});
 try {
   const context = await browser.newContext();
   const page = await context.newPage();
