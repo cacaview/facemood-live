@@ -1,0 +1,9 @@
+{
+  "gpu_experiment_wall_seconds": 0.0,
+  "gpu_card_hours": 0.0,
+  "normal_suggested_minutes": 300,
+  "maximum_suggested_minutes": 360,
+  "remaining_experiment_budget_minutes": 360.0,
+  "whole_server_released_window_minutes": 0,
+  "whole_server_window_note": "No GPU runs: zero used. With GPU runs, confirm actual whole-server release/restoration times separately; interval union is experiment coverage, not complete exclusive window."
+}

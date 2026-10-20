@@ -1,0 +1,32 @@
+[
+  {
+    "path": "public/models/baseline/emotion-ferplus-8.onnx",
+    "url": "https://media.githubusercontent.com/media/onnx/models/main/validated/vision/body_analysis/emotion_ferplus/model/emotion-ferplus-8.onnx",
+    "bytes": 35040571,
+    "sha256": "a2a2ba6a335a3b29c21acb6272f962bd3d47f84952aaffa03b60986e04efa61c"
+  },
+  {
+    "path": "public/models/face-detector.tflite",
+    "url": "https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/1/blaze_face_short_range.tflite",
+    "bytes": 229746,
+    "sha256": "b4578f35940bf5a1a655214a1cce5cab13eba73c1297cd78e1a04c2380b0152f"
+  },
+  {
+    "path": "models/baseline/UPSTREAM_README.md",
+    "url": "https://raw.githubusercontent.com/onnx/models/main/validated/vision/body_analysis/emotion_ferplus/README.md",
+    "bytes": 4170,
+    "sha256": "0f7de02e07d07ded0fed8e03d1365fd43ecffe2d1bb3c91f45aeeab34081ac37"
+  },
+  {
+    "path": "models/baseline/LICENSE",
+    "url": "https://raw.githubusercontent.com/onnx/models/main/LICENSE",
+    "bytes": 11358,
+    "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+  },
+  {
+    "path": "models/baseline/FERPLUS_LICENSE",
+    "url": "https://raw.githubusercontent.com/microsoft/FERPlus/master/LICENSE.md",
+    "bytes": 1102,
+    "sha256": "e9d873074f826f2b356b4141cf9c8423b36e257336787600fe4bbe5f5cc2e9fa"
+  }
+]

@@ -1,0 +1,6 @@
+# Linux server, Python 3.11/3.12. Install in isolated env; never alter vLLM env.
+torch==2.7.1
+Pillow==11.3.0
+numpy==2.2.6
+onnx==1.19.1
+onnxruntime==1.23.2

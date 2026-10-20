@@ -1,0 +1,32 @@
+{
+  "source": "情绪检测.zip",
+  "source_sha256": "2ee36d9dba8b84aac4219a5b80841ef458d79396ee30bcc8218c93fc0ef70140",
+  "zip_bytes": 340645743,
+  "uncompressed_bytes": 341532410,
+  "images": 35887,
+  "corrupt": 0,
+  "unknown_labels": [],
+  "dimensions": {
+    "48x48": 35887
+  },
+  "low_contrast_stddev_lt_5": 12,
+  "cross_split_exact_groups": 557,
+  "near_cross_split_candidate_groups": 716,
+  "elapsed_seconds": 14.261,
+  "extensions": {
+    "(directory/no suffix)": 36,
+    ".iml": 1,
+    ".xml": 6,
+    ".ds_store": 2,
+    ".png": 46,
+    ".jpg": 35889,
+    ".py": 13,
+    ".hdf5": 14,
+    ".md": 1,
+    ".txt": 1,
+    ".jpeg": 1,
+    ".mp4": 2,
+    ".log": 1,
+    ".pyc": 16
+  }
+}

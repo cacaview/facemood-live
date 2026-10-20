@@ -1,0 +1,147 @@
+500/3589, elapsed=8.1s
+1000/3589, elapsed=15.7s
+1500/3589, elapsed=23.4s
+2000/3589, elapsed=31.2s
+2500/3589, elapsed=39.3s
+3000/3589, elapsed=47.1s
+3500/3589, elapsed=54.8s
+{
+  "accuracy": 0.5642240178322653,
+  "macro_f1": 0.48043947679822985,
+  "balanced_accuracy": 0.49540539853344334,
+  "labels": [
+    "neutral",
+    "happiness",
+    "surprise",
+    "sadness",
+    "anger",
+    "disgust",
+    "fear",
+    "contempt"
+  ],
+  "support": [
+    607,
+    895,
+    415,
+    653,
+    467,
+    56,
+    496,
+    0
+  ],
+  "per_class_recall": [
+    0.899505766062603,
+    0.8614525139664805,
+    0.8,
+    0.24808575803981622,
+    0.36616702355460384,
+    0.23214285714285715,
+    0.06048387096774194,
+    0.0
+  ],
+  "per_class_f1": [
+    0.49681528662420377,
+    0.8495867768595042,
+    0.7554038680318544,
+    0.34033613445378147,
+    0.47566063977746875,
+    0.3333333333333334,
+    0.11194029850746268,
+    0.0
+  ],
+  "confusion_matrix": [
+    [
+      546,
+      35,
+      3,
+      18,
+      5,
+      0,
+      0,
+      0
+    ],
+    [
+      101,
+      771,
+      19,
+      3,
+      1,
+      0,
+      0,
+      0
+    ],
+    [
+      45,
+      28,
+      332,
+      2,
+      6,
+      0,
+      2,
+      0
+    ],
+    [
+      430,
+      27,
+      9,
+      162,
+      22,
+      0,
+      3,
+      0
+    ],
+    [
+      196,
+      37,
+      23,
+      27,
+      171,
+      8,
+      5,
+      0
+    ],
+    [
+      20,
+      3,
+      0,
+      6,
+      13,
+      13,
+      0,
+      1
+    ],
+    [
+      253,
+      19,
+      78,
+      81,
+      34,
+      1,
+      30,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ]
+  ],
+  "macro_scope": "Only ground-truth-supported classes; contempt remains a possible wrong prediction (8th column).",
+  "split": "PublicTest",
+  "count": 3589,
+  "subset": false,
+  "elapsed_seconds": 56.19927522400394,
+  "model_sha256": "a2a2ba6a335a3b29c21acb6272f962bd3d47f84952aaffa03b60986e04efa61c",
+  "inference_mean_ms": 15.225002455094211,
+  "inference_p50_ms": 14.914269995642826,
+  "inference_p95_ms": 17.165261201444082,
+  "runtime": "1.23.2",
+  "platform": "macOS-15.8.1-x86_64-i386-64bit",
+  "intra_op_threads": 1,
+  "warning": "FERPlus pretraining uses FER2013; not independent generalization evidence. Original splits have duplicate leakage. Unsmooth raw logits argmax, contempt always error on this 7-class dataset."
+}

@@ -1,0 +1,2 @@
+epoch=1 elapsed=3.7s ETA=0.0s best_macro_f1=0.0000 current=0.0000 GPU=[] vLLM窗口剩余=116.3s
+进程退出后请运行 python -m training.verify_gpu；未确认 vLLM 恢复。

@@ -1,0 +1,48 @@
+{
+  "frozen_at": "2026-10-20T20:19:33.235066+08:00",
+  "validation_scope": "PublicTest only, not independent FER2013 generalization",
+  "files": {
+    "models/baseline/FERPLUS_LICENSE": {
+      "bytes": 1102,
+      "sha256": "e9d873074f826f2b356b4141cf9c8423b36e257336787600fe4bbe5f5cc2e9fa"
+    },
+    "models/baseline/LICENSE": {
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    "models/baseline/MEDIAPIPE_LICENSE": {
+      "bytes": 12331,
+      "sha256": "8707eef0533987efc5b155d64761eeb6e20793f50b9bd1a68dad1cf4719d0ed8"
+    },
+    "models/baseline/UPSTREAM_README.md": {
+      "bytes": 4170,
+      "sha256": "0f7de02e07d07ded0fed8e03d1365fd43ecffe2d1bb3c91f45aeeab34081ac37"
+    },
+    "models/baseline/assets.json": {
+      "bytes": 1368,
+      "sha256": "b09f817b0ba72944c8bde6ebcbefe99df45d37fdcc3fa379a3e52d1d39ce0c62"
+    },
+    "models/baseline/config.json": {
+      "bytes": 768,
+      "sha256": "09ba4af53e0cb404fc3056eecb87d183502b84781443f6997df824214879ca77"
+    },
+    "models/baseline/fixtures.json": {
+      "bytes": 180988,
+      "sha256": "1d859a7abb3b583dfb118a271e32d824895ee95fe7462f3c86fa625763a6fbcf"
+    },
+    "models/baseline/model_card.md": {
+      "bytes": 3489,
+      "sha256": "71adb05a64d04313ef726467eed79f1bc64092feac912adfdfe9d8dfc3082c36"
+    },
+    "models/baseline/validation.json": {
+      "bytes": 2206,
+      "sha256": "591c3e67719e49d57890a06ddda6ff0c33dbdda3fcf4567e759c57cfc2848e4e"
+    },
+    "public/models/baseline/emotion-ferplus-8.onnx": {
+      "bytes": 35040571,
+      "sha256": "a2a2ba6a335a3b29c21acb6272f962bd3d47f84952aaffa03b60986e04efa61c"
+    }
+  },
+  "documentation_updated_at": "2026-10-20T21:53:18.695229+08:00",
+  "fixture_scope": "Synthetic numerical patterns only, no dataset pixels"
+}

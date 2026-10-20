@@ -1,0 +1,6 @@
+# Local CPU smoke only, independent env; not V100 compatibility evidence.
+torch==2.2.2
+numpy==1.26.4
+Pillow==11.3.0
+onnx==1.19.1
+onnxruntime==1.23.2

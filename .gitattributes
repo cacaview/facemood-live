@@ -1,0 +1,2 @@
+reports/*.csv whitespace=cr-at-eol
+public/vendor/** -whitespace

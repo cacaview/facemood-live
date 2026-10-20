@@ -1,0 +1,2 @@
+epoch=1 elapsed=2.9s ETA=0.0s best_macro_f1=0.0000 current=0.0000 GPU=[] vLLM窗口剩余=117.1s
+CPU 任务已退出；未使用 CUDA，未操作 vLLM。

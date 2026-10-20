@@ -1,0 +1,8 @@
+{
+  "artifact": "release/FaceMood-Live-v1.0-web.zip",
+  "bytes": 42150615,
+  "sha256": "8fb0736b20cf314ceadc9cc07bf3f812df10ba5811e81c7b8c5b00787cdbf4b2",
+  "source_commit": "4035592e128a745f2f6d5d0220cc4b3fc115df04",
+  "deployment": "local only; whole-site offline removed, models use version-checked IndexedDB storage",
+  "uncompressed_dist_bytes": 67752853
+}

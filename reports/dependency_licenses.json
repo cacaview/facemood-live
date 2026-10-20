@@ -1,0 +1,754 @@
+[
+  {
+    "name": "@babel/helper-string-parser",
+    "version": "7.29.7",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/babel/babel.git",
+      "directory": "packages/babel-helper-string-parser"
+    }
+  },
+  {
+    "name": "@babel/helper-validator-identifier",
+    "version": "7.29.7",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/babel/babel.git",
+      "directory": "packages/babel-helper-validator-identifier"
+    }
+  },
+  {
+    "name": "@babel/parser",
+    "version": "7.29.9",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/babel/babel.git",
+      "directory": "packages/babel-parser"
+    }
+  },
+  {
+    "name": "@babel/types",
+    "version": "7.29.8",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/babel/babel.git",
+      "directory": "packages/babel-types"
+    }
+  },
+  {
+    "name": "@esbuild/darwin-x64",
+    "version": "0.25.12",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/evanw/esbuild.git"
+    }
+  },
+  {
+    "name": "@jridgewell/resolve-uri",
+    "version": "3.1.2",
+    "license": "MIT",
+    "repository": "https://github.com/jridgewell/resolve-uri"
+  },
+  {
+    "name": "@jridgewell/sourcemap-codec",
+    "version": "1.6.0",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/jridgewell/sourcemaps.git",
+      "directory": "packages/sourcemap-codec"
+    }
+  },
+  {
+    "name": "@jridgewell/trace-mapping",
+    "version": "0.3.31",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/jridgewell/sourcemaps.git",
+      "directory": "packages/trace-mapping"
+    }
+  },
+  {
+    "name": "@mediapipe/tasks-vision",
+    "version": "0.10.22-rc.20250304",
+    "license": "Apache-2.0"
+  },
+  {
+    "name": "@playwright/test",
+    "version": "1.56.1",
+    "license": "Apache-2.0",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/microsoft/playwright.git"
+    }
+  },
+  {
+    "name": "@protobufjs/aspromise",
+    "version": "1.1.2",
+    "license": "BSD-3-Clause",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/dcodeIO/protobuf.js.git"
+    }
+  },
+  {
+    "name": "@protobufjs/base64",
+    "version": "1.1.2",
+    "license": "BSD-3-Clause",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/dcodeIO/protobuf.js.git"
+    }
+  },
+  {
+    "name": "@protobufjs/codegen",
+    "version": "2.0.5",
+    "license": "BSD-3-Clause",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/dcodeIO/protobuf.js.git"
+    }
+  },
+  {
+    "name": "@protobufjs/eventemitter",
+    "version": "1.1.1",
+    "license": "BSD-3-Clause",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/dcodeIO/protobuf.js.git"
+    }
+  },
+  {
+    "name": "@protobufjs/fetch",
+    "version": "1.1.1",
+    "license": "BSD-3-Clause",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/dcodeIO/protobuf.js.git"
+    }
+  },
+  {
+    "name": "@protobufjs/float",
+    "version": "1.0.2",
+    "license": "BSD-3-Clause",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/dcodeIO/protobuf.js.git"
+    }
+  },
+  {
+    "name": "@protobufjs/path",
+    "version": "1.1.2",
+    "license": "BSD-3-Clause",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/dcodeIO/protobuf.js.git"
+    }
+  },
+  {
+    "name": "@protobufjs/pool",
+    "version": "1.1.0",
+    "license": "BSD-3-Clause",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/dcodeIO/protobuf.js.git"
+    }
+  },
+  {
+    "name": "@protobufjs/utf8",
+    "version": "1.1.2",
+    "license": "BSD-3-Clause",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/protobufjs/protobuf.js.git"
+    }
+  },
+  {
+    "name": "@rolldown/pluginutils",
+    "version": "1.0.0-beta.29",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/rolldown/rolldown.git",
+      "directory": "packages/pluginutils"
+    }
+  },
+  {
+    "name": "@rollup/rollup-darwin-x64",
+    "version": "4.64.12",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/rollup/rollup.git"
+    }
+  },
+  {
+    "name": "@types/chai",
+    "version": "5.2.3",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+      "directory": "types/chai"
+    }
+  },
+  {
+    "name": "@types/deep-eql",
+    "version": "4.0.2",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+      "directory": "types/deep-eql"
+    }
+  },
+  {
+    "name": "@types/estree",
+    "version": "1.0.9",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+      "directory": "types/estree"
+    }
+  },
+  {
+    "name": "@types/node",
+    "version": "26.6.5",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+      "directory": "types/node"
+    }
+  },
+  {
+    "name": "@vitejs/plugin-vue",
+    "version": "6.0.1",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/vitejs/vite-plugin-vue.git",
+      "directory": "packages/plugin-vue"
+    }
+  },
+  {
+    "name": "@vitest/mocker",
+    "version": "5.0.5",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/vitest-dev/vitest.git",
+      "directory": "packages/mocker"
+    }
+  },
+  {
+    "name": "@vitest/spy",
+    "version": "5.0.5",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/vitest-dev/vitest.git",
+      "directory": "packages/spy"
+    }
+  },
+  {
+    "name": "@volar/language-core",
+    "version": "2.4.23",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/volarjs/volar.js.git",
+      "directory": "packages/language-core"
+    }
+  },
+  {
+    "name": "@volar/source-map",
+    "version": "2.4.23",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/volarjs/volar.js.git",
+      "directory": "packages/source-map"
+    }
+  },
+  {
+    "name": "@volar/typescript",
+    "version": "2.4.23",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/volarjs/volar.js.git",
+      "directory": "packages/typescript"
+    }
+  },
+  {
+    "name": "@vue/compiler-core",
+    "version": "3.5.44",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/vuejs/core.git",
+      "directory": "packages/compiler-core"
+    }
+  },
+  {
+    "name": "@vue/compiler-dom",
+    "version": "3.5.44",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/vuejs/core.git",
+      "directory": "packages/compiler-dom"
+    }
+  },
+  {
+    "name": "@vue/compiler-sfc",
+    "version": "3.5.44",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/vuejs/core.git",
+      "directory": "packages/compiler-sfc"
+    }
+  },
+  {
+    "name": "@vue/compiler-ssr",
+    "version": "3.5.44",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/vuejs/core.git",
+      "directory": "packages/compiler-ssr"
+    }
+  },
+  {
+    "name": "@vue/language-core",
+    "version": "3.1.1",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/vuejs/language-tools.git",
+      "directory": "packages/language-core"
+    }
+  },
+  {
+    "name": "@vue/reactivity",
+    "version": "3.5.44",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/vuejs/core.git",
+      "directory": "packages/reactivity"
+    }
+  },
+  {
+    "name": "@vue/runtime-core",
+    "version": "3.5.44",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/vuejs/core.git",
+      "directory": "packages/runtime-core"
+    }
+  },
+  {
+    "name": "@vue/runtime-dom",
+    "version": "3.5.44",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/vuejs/core.git",
+      "directory": "packages/runtime-dom"
+    }
+  },
+  {
+    "name": "@vue/server-renderer",
+    "version": "3.5.44",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/vuejs/core.git",
+      "directory": "packages/server-renderer"
+    }
+  },
+  {
+    "name": "@vue/shared",
+    "version": "3.5.44",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/vuejs/core.git",
+      "directory": "packages/shared"
+    }
+  },
+  {
+    "name": "alien-signals",
+    "version": "3.2.1",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/stackblitz/alien-signals.git"
+    }
+  },
+  {
+    "name": "assertion-error",
+    "version": "2.0.1",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git@github.com:chaijs/assertion-error.git"
+    }
+  },
+  {
+    "name": "chai",
+    "version": "6.3.0",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/chaijs/chai"
+    }
+  },
+  {
+    "name": "csstype",
+    "version": "3.2.3",
+    "license": "MIT",
+    "repository": "https://github.com/frenic/csstype"
+  },
+  {
+    "name": "entities",
+    "version": "7.0.1",
+    "license": "BSD-2-Clause",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/fb55/entities.git"
+    }
+  },
+  {
+    "name": "es-module-lexer",
+    "version": "2.3.2",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/guybedford/es-module-lexer.git"
+    }
+  },
+  {
+    "name": "esbuild",
+    "version": "0.25.12",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/evanw/esbuild.git"
+    }
+  },
+  {
+    "name": "estree-walker",
+    "version": "3.0.3",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/Rich-Harris/estree-walker"
+    }
+  },
+  {
+    "name": "expect-type",
+    "version": "1.4.0",
+    "license": "Apache-2.0",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/mmkal/expect-type.git"
+    }
+  },
+  {
+    "name": "fdir",
+    "version": "6.5.0",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/thecodrr/fdir.git"
+    }
+  },
+  {
+    "name": "flatbuffers",
+    "version": "25.9.23",
+    "license": "Apache-2.0",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/google/flatbuffers.git"
+    }
+  },
+  {
+    "name": "fsevents",
+    "version": "2.3.2",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/fsevents/fsevents.git"
+    }
+  },
+  {
+    "name": "guid-typescript",
+    "version": "1.0.9",
+    "license": "ISC",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/NicolasDeveloper/guid-typescript"
+    }
+  },
+  {
+    "name": "long",
+    "version": "5.3.2",
+    "license": "Apache-2.0",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/dcodeIO/long.js.git"
+    }
+  },
+  {
+    "name": "magic-string",
+    "version": "0.30.21",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/Rich-Harris/magic-string.git"
+    }
+  },
+  {
+    "name": "muggle-string",
+    "version": "0.4.1",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/johnsoncodehk/muggle-string.git"
+    }
+  },
+  {
+    "name": "nanoid",
+    "version": "3.3.20",
+    "license": "MIT",
+    "repository": "ai/nanoid"
+  },
+  {
+    "name": "obug",
+    "version": "3.0.0",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/sxzz/obug.git"
+    }
+  },
+  {
+    "name": "onnxruntime-common",
+    "version": "1.23.2",
+    "license": "MIT",
+    "repository": {
+      "url": "https://github.com/Microsoft/onnxruntime.git",
+      "type": "git"
+    }
+  },
+  {
+    "name": "onnxruntime-web",
+    "version": "1.23.2",
+    "license": "MIT",
+    "repository": {
+      "url": "https://github.com/Microsoft/onnxruntime.git",
+      "type": "git"
+    }
+  },
+  {
+    "name": "path-browserify",
+    "version": "1.0.1",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/browserify/path-browserify.git"
+    }
+  },
+  {
+    "name": "picocolors",
+    "version": "1.1.1",
+    "license": "ISC",
+    "repository": "alexeyraspopov/picocolors"
+  },
+  {
+    "name": "picomatch",
+    "version": "4.0.7",
+    "license": "MIT",
+    "repository": "micromatch/picomatch"
+  },
+  {
+    "name": "platform",
+    "version": "1.3.6",
+    "license": "MIT",
+    "repository": "bestiejs/platform.js"
+  },
+  {
+    "name": "playwright",
+    "version": "1.56.1",
+    "license": "Apache-2.0",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/microsoft/playwright.git"
+    }
+  },
+  {
+    "name": "playwright-core",
+    "version": "1.56.1",
+    "license": "Apache-2.0",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/microsoft/playwright.git"
+    }
+  },
+  {
+    "name": "postcss",
+    "version": "8.5.31",
+    "license": "MIT",
+    "repository": "postcss/postcss"
+  },
+  {
+    "name": "prettier",
+    "version": "3.6.2",
+    "license": "MIT",
+    "repository": "prettier/prettier"
+  },
+  {
+    "name": "protobufjs",
+    "version": "7.6.6",
+    "license": "BSD-3-Clause",
+    "repository": "protobufjs/protobuf.js"
+  },
+  {
+    "name": "rollup",
+    "version": "4.64.12",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/rollup/rollup.git"
+    }
+  },
+  {
+    "name": "source-map-js",
+    "version": "1.2.2",
+    "license": "BSD-3-Clause",
+    "repository": "7rulnik/source-map-js"
+  },
+  {
+    "name": "std-env",
+    "version": "4.3.0",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "unjs/std-env"
+    }
+  },
+  {
+    "name": "tinybench",
+    "version": "6.2.2",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "tinylibs/tinybench"
+    }
+  },
+  {
+    "name": "tinyexec",
+    "version": "1.3.1",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/tinylibs/tinyexec.git"
+    }
+  },
+  {
+    "name": "tinyglobby",
+    "version": "0.2.17",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/SuperchupuDev/tinyglobby.git"
+    }
+  },
+  {
+    "name": "typescript",
+    "version": "5.9.3",
+    "license": "Apache-2.0",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/microsoft/TypeScript.git"
+    }
+  },
+  {
+    "name": "undici-types",
+    "version": "8.9.0",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/nodejs/undici.git"
+    }
+  },
+  {
+    "name": "vite",
+    "version": "7.3.7",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/vitejs/vite.git",
+      "directory": "packages/vite"
+    }
+  },
+  {
+    "name": "vitest",
+    "version": "5.0.5",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/vitest-dev/vitest.git",
+      "directory": "packages/vitest"
+    }
+  },
+  {
+    "name": "vscode-uri",
+    "version": "3.2.0",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/microsoft/vscode-uri.git"
+    }
+  },
+  {
+    "name": "vue",
+    "version": "3.5.44",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/vuejs/core.git"
+    }
+  },
+  {
+    "name": "vue-tsc",
+    "version": "3.1.1",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/vuejs/language-tools.git",
+      "directory": "packages/tsc"
+    }
+  },
+  {
+    "name": "why-is-node-running",
+    "version": "3.2.1",
+    "license": "MIT",
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/mafintosh/why-is-node-running.git"
+    }
+  }
+]
