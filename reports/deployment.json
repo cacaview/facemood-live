@@ -1,12 +1,14 @@
 {
-  "release": "20261020-222022-8575489b",
-  "current": "/var/www/facemood/releases/20261020-222022-8575489b/site",
-  "previous": null,
-  "backup": "/var/backups/facemood/20261020-222022-8575489b",
+  "release": "20261020-232108-293458eb",
+  "current": "/var/www/facemood/releases/20261020-232108-293458eb/site",
+  "previous": "/var/www/facemood/releases/20261020-222022-8575489b/site",
+  "backup": "/var/backups/facemood/20261020-232108-293458eb",
   "port": 8443,
   "url": "https://106.53.199.187:8443/",
   "existing_site": "unchanged",
   "vllm": "not accessed",
-  "source_commit": "8575489bac6f142bf5645fcbc2432ba8c2802252",
-  "archive_sha256": "14a95b1eb6f08ca800611a7b168bec10660625edf0b277f439b11b300bbc7826"
+  "source_commit": "293458eb1519944f951d048795d288b65a88694e",
+  "archive_sha256": "13b8a071161a1328226b133149e382b80d599da0ee5f00b377482357884034da",
+  "transport": "SHA-256-verified reuse of unchanged server assets",
+  "transferred_bytes": 106805
 }

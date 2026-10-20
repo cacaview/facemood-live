@@ -18,3 +18,7 @@ The model body is now read as a stream; actual bytes and, when Content-Length is
 New tests cover initialization lasting 180 seconds with progress, 90-second inactivity, the 10-minute absolute cap, streamed progress and interrupted downloads retaining no partial model. All 20 unit tests passed after the fix; both production builds passed. Public browser verification is recorded separately in deployment_verification.json.
 
 No GPU task or vLLM/Qwen change was performed. Windows/iPhone/Android hardware acceptance remains untested.
+
+## Public result
+
+Public-browser verification passed on the new HTTPS release. Cold first-ready observation was approximately 213 seconds; the unchanged model was not downloaded on refresh (one ONNX request across two opens). The previously failing slow-download boundary was crossed successfully. This measured network path still has a slow first download. See deployment_verification.json for timestamps, verified model SHA, sample output and checks.
