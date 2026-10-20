@@ -473,14 +473,27 @@ onBeforeUnmount(() => {
   <div class="app">
     <header>
       <a class="brand" :href="appBase" aria-label="FaceMood 首页"
-        ><span class="brand-icon">◡</span><span>FaceMood <b>LIVE</b></span></a
+        ><span class="brand-icon" aria-hidden="true"
+          ><svg viewBox="0 0 32 32" fill="none">
+            <path
+              d="M11 4H7a3 3 0 0 0-3 3v4m17-7h4a3 3 0 0 1 3 3v4M4 21v4a3 3 0 0 0 3 3h4m10 0h4a3 3 0 0 0 3-3v-4"
+              stroke="currentColor"
+              stroke-width="2"
+            />
+            <path
+              d="M11 13v2m10-2v2m-10 5c3 3 7 3 10 0"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            /></svg></span
+        ><span>FaceMood <b>LIVE</b></span></a
       ><span class="local-badge"><i></i> 设备本地处理</span>
     </header>
     <section class="intro">
       <div>
-        <p class="eyebrow">FACE EXPRESSION LAB / V1.0</p>
-        <h1>看见表情，<span>尊重感受。</span></h1>
-        <p>实时面部表情分类 · 无需上传画面 · 无需账号</p>
+        <p class="eyebrow">你的实时表情观察台</p>
+        <h1>每一个表情，都在此刻。</h1>
+        <p>打开摄像头，探索面部表情的细微变化。</p>
       </div>
       <span class="connection"
         >{{ online ? "在线" : "离线" }} / {{ backend }}</span
@@ -526,8 +539,31 @@ onBeforeUnmount(() => {
           />
           <canvas ref="overlay" class="overlay"></canvas>
           <div class="placeholder" v-if="!running && !url && !stream">
-            <div class="face-outline">
-              <span>· &nbsp; ·</span><span>◡</span>
+            <div class="face-outline" aria-hidden="true">
+              <svg viewBox="0 0 160 160" fill="none">
+                <path
+                  d="M42 16H26a10 10 0 0 0-10 10v16m102-26h16a10 10 0 0 1 10 10v16M16 118v16a10 10 0 0 0 10 10h16m76 0h16a10 10 0 0 0 10-10v-16"
+                  stroke="currentColor"
+                  stroke-width="2"
+                />
+                <path
+                  d="M80 29c-28 0-43 23-39 50 3 30 17 52 39 52s36-22 39-52c4-27-11-50-39-50Z"
+                  stroke="currentColor"
+                  stroke-opacity=".4"
+                />
+                <path
+                  d="M59 69h8m26 0h8M65 99c9 8 21 8 30 0m-15-23-4 12h8"
+                  stroke="currentColor"
+                  stroke-width="3"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M27 80h106"
+                  stroke="currentColor"
+                  stroke-opacity=".22"
+                  stroke-dasharray="3 5"
+                />
+              </svg>
             </div>
             <h2>从一个表情开始</h2>
             <p>启动摄像头，或选择本地素材体验</p>
@@ -603,6 +639,15 @@ onBeforeUnmount(() => {
           表情分析 <span class="tag">FER+ / 8 CLASSES</span>
         </div>
         <div class="prediction">
+          <div
+            class="confidence-orbit"
+            :style="{ '--confidence': `${confidence * 100}%` }"
+            aria-hidden="true"
+          >
+            <span>{{
+              probabilities ? `${(confidence * 100).toFixed(0)}%` : "—"
+            }}</span>
+          </div>
           <span class="eyebrow">当前主要表情</span>
           <h2>{{ primary }}</h2>
           <p>
@@ -614,7 +659,14 @@ onBeforeUnmount(() => {
           </p>
         </div>
         <div class="probabilities">
-          <div v-for="(label, i) in labels" :key="label" class="probability">
+          <div
+            v-for="(label, i) in labels"
+            :key="label"
+            class="probability"
+            :class="{
+              leading: probabilities && probabilities[i] === confidence,
+            }"
+          >
             <div>
               <span>{{ label }}</span
               ><span>{{
@@ -679,10 +731,13 @@ onBeforeUnmount(() => {
           <polyline
             :points="points"
             fill="none"
-            stroke="#70e4bc"
+            stroke="#8abfff"
             stroke-width="1.5"
           />
         </svg>
+        <p v-if="!trend.length" class="timeline-empty">
+          完成识别后，查看置信度随时间的变化
+        </p>
         <div class="axis"><span>−60s</span><span>现在</span></div>
       </section>
     </main>
