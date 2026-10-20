@@ -7,6 +7,7 @@ export class InferenceEngine {
       resolve: (r: any) => void;
       reject: (e: Error) => void;
       timer: ReturnType<typeof setTimeout>;
+      deadline?: ReturnType<typeof setTimeout>;
     }
   >();
   ready = false;
@@ -19,9 +20,15 @@ export class InferenceEngine {
     this.worker.onerror = (e) =>
       this.fail(Error(e.message || "推理 Worker 异常，请重试"));
     return new Promise((resolve, reject) => {
-      const timer = setTimeout(() => {
-        this.fail(Error("模型加载超时，请检查本地资源后重试"));
-      }, 90000);
+      const stalled = () =>
+        this.fail(
+          Error("模型加载超时：90 秒未收到下载或初始化进度，请检查网络后重试"),
+        );
+      const timer = setTimeout(stalled, 90000);
+      const deadline = setTimeout(
+        () => this.fail(Error("模型加载已超过 10 分钟，请检查网络后重试")),
+        600000,
+      );
       this.waiting.set(0, {
         resolve: (r) => {
           this.ready = true;
@@ -29,9 +36,15 @@ export class InferenceEngine {
         },
         reject,
         timer,
+        deadline,
       });
       this.worker!.onmessage = ({ data }) => {
         if (data.type === "status") {
+          const init = this.waiting.get(0);
+          if (init) {
+            clearTimeout(init.timer);
+            init.timer = setTimeout(stalled, 90000);
+          }
           onStatus(data.message);
           return;
         }
@@ -43,6 +56,7 @@ export class InferenceEngine {
         }
         if (pending) {
           clearTimeout(pending.timer);
+          clearTimeout(pending.deadline);
           this.waiting.delete(id);
           pending.resolve(data);
         }
@@ -54,6 +68,7 @@ export class InferenceEngine {
     this.ready = false;
     for (const p of this.waiting.values()) {
       clearTimeout(p.timer);
+      clearTimeout(p.deadline);
       p.reject(error);
     }
     this.waiting.clear();

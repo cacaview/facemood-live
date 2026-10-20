@@ -27,9 +27,31 @@ try {
     if (path.endsWith("/models/active.json")) manifests++;
   });
   page.on("pageerror", (e) => pageErrors.push(e.message));
+  const started = Date.now();
+  const statuses = [];
+  await page.exposeFunction("recordLoadStatus", (text) => {
+    if (statuses.at(-1)?.text !== text) {
+      statuses.push({ seconds: (Date.now() - started) / 1000, text });
+      console.log(`[${Math.round((Date.now() - started) / 1000)}s] ${text}`);
+    }
+  });
+  await page.addInitScript(() => {
+    const observer = new MutationObserver(() => {
+      const text = document
+        .querySelector('[role="status"]')
+        ?.textContent?.trim();
+      if (text) window.recordLoadStatus(text);
+    });
+    observer.observe(document, {
+      subtree: true,
+      childList: true,
+      characterData: true,
+    });
+  });
+  record.loadStatuses = statuses;
   await page.goto(url, { timeout: 60000 });
   await expect(page.getByRole("status")).toContainText("模型已就绪", {
-    timeout: 150000,
+    timeout: 610000,
   });
   record.secureContext = await page.evaluate(() => window.isSecureContext);
   if (!record.secureContext) throw Error("Not a secure camera context");
@@ -77,7 +99,7 @@ try {
   const initialDownloads = downloads;
   await page.reload();
   await expect(page.getByRole("status")).toContainText("模型已就绪", {
-    timeout: 150000,
+    timeout: 610000,
   });
   if (downloads !== initialDownloads)
     throw Error("Unchanged model downloaded again");

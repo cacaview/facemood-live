@@ -34,7 +34,11 @@ export async function loadModel(
   const response = await fetcher(spec.path, { cache: "no-store" });
   if (!response.ok)
     throw Error(`模型文件加载失败（${response.status}），请检查网络后重试`);
-  const bytes = await response.arrayBuffer();
+  const bytes = await readDownload(
+    response,
+    status,
+    spec.key === "expression" ? "表情模型" : "人脸检测模型",
+  );
   if ((await digest(bytes)) !== spec.sha256)
     throw Error("模型校验失败，未替换原有本地模型，请重试");
   try {
@@ -44,6 +48,46 @@ export async function loadModel(
     status("模型已校验，但本地保存失败；下次打开将重新下载");
   }
   return bytes;
+}
+async function readDownload(
+  response: Response,
+  status: (message: string) => void,
+  name: string,
+): Promise<ArrayBuffer> {
+  if (!response.body) return response.arrayBuffer();
+  const total = Number(response.headers.get("content-length")) || 0;
+  const reader = response.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let received = 0,
+    last = -Infinity;
+  try {
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      chunks.push(value);
+      received += value.byteLength;
+      const now = performance.now();
+      if (now - last >= 400 || received === total) {
+        last = now;
+        const mb = (received / 1048576).toFixed(1);
+        status(
+          total
+            ? `正在下载${name}：${Math.min(100, Math.floor((received / total) * 100))}%（${mb} / ${(total / 1048576).toFixed(1)} MB）`
+            : `正在下载${name}：已接收 ${mb} MB`,
+        );
+      }
+    }
+  } finally {
+    reader.releaseLock();
+  }
+  status(`${name}下载完成，正在校验…`);
+  const bytes = new Uint8Array(received);
+  let offset = 0;
+  for (const chunk of chunks) {
+    bytes.set(chunk, offset);
+    offset += chunk.byteLength;
+  }
+  return bytes.buffer;
 }
 export function browserModelStore(): ModelStore {
   const dbPromise = new Promise<IDBDatabase>((resolve, reject) => {

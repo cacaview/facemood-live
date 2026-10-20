@@ -51,3 +51,35 @@ it("replaces local version only after a valid update completes", async () => {
   await loadModel(spec, s, async () => new Response(bytes));
   expect((await s.get("expression"))?.sha256).toBe(sha);
 });
+it("reports streamed byte progress and only saves the fully verified model", async () => {
+  const status = vi.fn();
+  const s = store();
+  const stream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(new Uint8Array([1, 2]));
+      controller.enqueue(new Uint8Array([3]));
+      controller.close();
+    },
+  });
+  await loadModel(
+    spec,
+    s,
+    async () => new Response(stream, { headers: { "Content-Length": "3" } }),
+    status,
+  );
+  expect(status.mock.calls.some(([text]) => text.includes("100%"))).toBe(true);
+  expect((await s.get("expression"))?.bytes).toEqual(bytes);
+});
+it("does not persist a truncated streamed download", async () => {
+  const s = store();
+  const stream = new ReadableStream({
+    start(controller) {
+      controller.enqueue(new Uint8Array([1]));
+      controller.error(Error("connection lost"));
+    },
+  });
+  await expect(
+    loadModel(spec, s, async () => new Response(stream)),
+  ).rejects.toThrow();
+  expect(await s.get("expression")).toBeUndefined();
+});

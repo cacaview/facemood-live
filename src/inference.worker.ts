@@ -67,6 +67,7 @@ self.onmessage = async (e: MessageEvent) => {
         runningMode: "IMAGE",
         minDetectionConfidence: 0.5,
       });
+      progress("正在初始化表情分类引擎…");
       session = await ort.InferenceSession.create(bytes, {
         executionProviders: ["wasm"],
         graphOptimizationLevel: "all",
