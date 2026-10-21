@@ -14,6 +14,8 @@
     "prebuild": "node scripts/build_worker.mjs",
     "worker": "node scripts/build_worker.mjs",
     "rollback:baseline": "node scripts/rollback_baseline.mjs && npm run build",
+    "rollback:visual": "node scripts/rollback_visual_baseline.mjs",
+    "test:visual-rollback": "node --test scripts/rollback_visual_baseline.test.mjs",
     "build:server": "node scripts/build_worker.mjs && vue-tsc --noEmit && vite build --base=/ --outDir=dist-server && node scripts/build_retirement_worker.mjs dist-server"
   },
   "dependencies": {
