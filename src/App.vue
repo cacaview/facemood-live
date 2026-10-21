@@ -79,9 +79,9 @@ const prototypeNames: Record<PrototypeEmotion, string> = {
   anger: "愤怒 · 熔岩晶体",
 };
 const prototypeDescriptions: Record<PrototypeEmotion, string> = {
-  neutral: "层叠银蓝能量壳稳定呼吸，轻触泛起柔和波纹。",
-  happiness: "金橙与粉紫花瓣缓慢开合，扰动会推动花朵舒展。",
-  anger: "赤红晶体周期收紧，触碰使碎片短暂散开再聚合。",
+  neutral: "银蓝粒子沿层叠薄膜漂流，在呼吸之间泛起微光。",
+  happiness: "金色孢子与粉紫薄膜交织成花，随触碰舒展。",
+  anger: "熔光沿晶簇裂隙流动，碎片随扰动散开再聚合。",
 };
 const visualEmotion = computed(() =>
   resolveVisualEmotion(
@@ -157,7 +157,10 @@ function syncVisualCycle() {
   if (visualCycleTimer !== null) window.clearInterval(visualCycleTimer);
   visualCycleTimer = null;
   if (visualMode.value !== "cycle" || reducedMotion.value) return;
-  visualCycleIndex = Math.max(0, prototypeEmotions.indexOf(previewEmotion.value));
+  visualCycleIndex = Math.max(
+    0,
+    prototypeEmotions.indexOf(previewEmotion.value),
+  );
   visualCycleTimer = window.setInterval(() => {
     visualCycleIndex = (visualCycleIndex + 1) % prototypeEmotions.length;
     previewEmotion.value = prototypeEmotions[visualCycleIndex]!;
@@ -601,24 +604,46 @@ onBeforeUnmount(() => {
               stroke-linecap="round"
             /></svg></span
         ><span>FaceMood <b>LIVE</b></span></a
-      ><span class="local-badge"><i></i> 设备本地处理</span>
+      >
+      <nav class="site-nav" aria-label="主导航">
+        <a href="#ecosystem" class="active">情绪生态</a
+        ><a href="#observations">观察数据 ↗</a>
+      </nav>
+      <span class="local-badge"><i></i> 设备本地处理</span>
     </header>
     <section class="intro">
       <div>
-        <p class="eyebrow">你的实时表情观察台</p>
-        <h1>每一个表情，都在此刻。</h1>
-        <p>打开摄像头，探索面部表情的细微变化。</p>
+        <p class="eyebrow"><span></span> EMOTION, IN MOTION</p>
+        <h1>
+          让情绪，<br /><span>自由<em>流动。</em></span>
+        </h1>
+        <p>
+          每一个表情，都是一片独特的生态。<br />轻触光的轮廓，感受此刻的共鸣。
+        </p>
+        <a class="explore-link" href="#observations"
+          >查看观察数据 <span>↘</span></a
+        >
       </div>
       <span class="connection"
         >{{ online ? "在线" : "离线" }} / {{ backend }}</span
       >
     </section>
     <main>
-      <section class="panel emotion-ecosystem" aria-labelledby="emotion-scene-title">
+      <section
+        id="ecosystem"
+        class="panel emotion-ecosystem"
+        aria-labelledby="emotion-scene-title"
+      >
         <div class="panel-heading">
-          <span id="emotion-scene-title">情绪生态 · 交互式 3D 视觉</span>
+          <span id="emotion-scene-title">01 — LIVE ECOSYSTEM</span>
           <span class="emotion-scene-status" aria-live="polite">
-            {{ sceneFallback ? "渐变后备" : sceneFps ? `3D ${sceneFps} FPS` : "WebGL2 场景启动中" }}
+            {{
+              sceneFallback
+                ? "渐变后备"
+                : sceneFps
+                  ? `3D ${sceneFps} FPS`
+                  : "WebGL2 场景启动中"
+            }}
           </span>
         </div>
         <div class="emotion-stage-shell" :data-emotion="visualEmotion">
@@ -629,30 +654,43 @@ onBeforeUnmount(() => {
             :quality="sceneQuality"
             :reduced-motion="reducedMotion"
             @ready="onSceneReady"
-            @fallback="sceneFallback = $event; sceneFps = 0"
+            @fallback="
+              sceneFallback = $event;
+              sceneFps = 0;
+            "
           />
           <div v-else class="emotion-scene-fallback" aria-live="polite">
             3D 画面已暂停，摄像头与识别仍可继续使用。
           </div>
           <div class="emotion-stage-copy">
-            <span class="emotion-kicker">LIVE EMOTION ENTITY</span>
+            <span class="emotion-kicker">CURRENT FORM / 当前形态</span>
             <h2>{{ prototypeNames[visualEmotion] }}</h2>
             <p>{{ prototypeDescriptions[visualEmotion] }}</p>
-            <span class="emotion-disclaimer">表情视觉隐喻 · 不代表内在心理状态</span>
+            <span class="emotion-disclaimer"
+              >拖动以扰动粒子 · 松手后自然回稳</span
+            >
           </div>
         </div>
         <div class="emotion-controls">
           <div class="emotion-mode-controls" aria-label="视觉模式">
-            <button :aria-pressed="visualMode === 'live'" @click="setVisualMode('live')">
+            <button
+              :aria-pressed="visualMode === 'live'"
+              @click="setVisualMode('live')"
+            >
               跟随识别
             </button>
-            <button :aria-pressed="visualMode === 'cycle'" @click="setVisualMode('cycle')">
+            <button
+              :aria-pressed="visualMode === 'cycle'"
+              @click="setVisualMode('cycle')"
+            >
               三形态轮播
             </button>
             <button
               v-for="emotion in prototypeEmotions"
               :key="emotion"
-              :aria-pressed="visualMode === 'manual' && previewEmotion === emotion"
+              :aria-pressed="
+                visualMode === 'manual' && previewEmotion === emotion
+              "
               @click="selectPreviewEmotion(emotion)"
             >
               {{ prototypeNames[emotion] }}
@@ -662,9 +700,9 @@ onBeforeUnmount(() => {
             <label>
               画质
               <select v-model="sceneQuality" aria-label="3D 画质">
-                <option value="low">低 · 1000 粒子</option>
-                <option value="medium">中 · 3000 粒子</option>
-                <option value="high">高 · 8000 粒子</option>
+                <option value="low">低 · 5000 总粒子</option>
+                <option value="medium">中 · 15000 总粒子</option>
+                <option value="high">高 · 28000 总粒子</option>
               </select>
             </label>
             <label class="emotion-reduced-motion">
@@ -680,13 +718,18 @@ onBeforeUnmount(() => {
             </button>
           </div>
         </div>
+        <a class="scene-scroll-link" href="#capture">开启表情观察 ↓</a>
         <p class="emotion-prototype-note">
-          首阶段已实现 3 / 8 种形态；其余 {{ remainingEmotionCount }} 类暂以中性静态形态呈现，待真机性能与交互验收后扩展。
-          <span v-if="reducedMotion && visualMode === 'cycle'">减少动态效果已暂停自动轮播。</span>
+          视觉原型 03 / 08 · 其余
+          {{ remainingEmotionCount }}
+          类暂呈现中性形态。表情视觉隐喻，不代表内在心理状态。
+          <span v-if="reducedMotion && visualMode === 'cycle'"
+            >减少动态效果已暂停自动轮播。</span
+          >
           {{ sceneFallback }}
         </p>
       </section>
-      <section class="viewer panel">
+      <section id="capture" class="viewer panel">
         <div class="panel-heading">
           <span
             ><i class="dot" :class="{ active: running }"></i>
@@ -869,7 +912,7 @@ onBeforeUnmount(() => {
           显示“无法确定”。分类结果仅描述可见表情。
         </p>
       </aside>
-      <section class="panel performance">
+      <section id="observations" class="panel performance">
         <div class="panel-heading">
           运行指标
           <button class="text-button" @click="exportStats">

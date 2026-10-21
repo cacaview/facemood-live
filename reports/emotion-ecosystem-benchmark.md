@@ -2,6 +2,8 @@
 
 Recorded: 2026-10-21 (Asia/Shanghai)
 
+**Historical first-prototype record.** The later full-screen particle revision has different rendering costs and particle budgets; see [its verification record](emotion-immersive-revision.md). FPS in this document does not validate that later revision.
+
 The headless benchmark is a browser automation observation, not a hardware performance acceptance: it reported ANGLE WebGL2 backed by **SwiftShader (software rendering)**. A separate interactive Edge desktop sample is listed in the results, but its GPU identity was unavailable. The mobile row is a viewport emulation rather than an iPhone.
 
 ## Environment and method

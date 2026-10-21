@@ -62,10 +62,17 @@ function meshForParticles(count: number, material: ShaderMaterial) {
   pointsGeometry.setAttribute("position", new BufferAttribute(positions, 3));
   pointsGeometry.setAttribute("aFlowUv", new BufferAttribute(uvs, 2));
   pointsGeometry.setAttribute("aPhase", new BufferAttribute(phases, 1));
-  return { points: new Points(pointsGeometry, material), geometry: pointsGeometry };
+  return {
+    points: new Points(pointsGeometry, material),
+    geometry: pointsGeometry,
+  };
 }
 
-function createParticleMaterial(flow: DataTexture, color: string, pixelRatio: number) {
+function createParticleMaterial(
+  flow: DataTexture,
+  color: string,
+  pixelRatio: number,
+) {
   return new ShaderMaterial({
     transparent: true,
     depthWrite: false,
@@ -89,7 +96,7 @@ function createParticleMaterial(flow: DataTexture, color: string, pixelRatio: nu
         vec4 viewPosition = modelViewMatrix * vec4(position + drift, 1.0);
         gl_Position = projectionMatrix * viewPosition;
         gl_PointSize = clamp(uPixelRatio * (1.4 + flow.b * 2.3), 1.0, 4.4);
-        vAlpha = 0.17 + flow.b * 0.42 + (sin(uTime * 0.4 + aPhase) + 1.0) * 0.035;
+        vAlpha = 0.045 + flow.b * 0.35 + (sin(uTime * 0.4 + aPhase) + 1.0) * 0.012;
       }
     `,
     fragmentShader: `
@@ -156,7 +163,9 @@ export class EmotionScene {
     this.reducedMotion = reducedMotion;
     this.transitions.setDuration(reducedMotion ? 180 : 1000, performance.now());
     this.camera.position.set(0, 0, 5.3);
-    this.palette = { value: new Color(EmotionRegistry.neutral.palette.primary) };
+    this.palette = {
+      value: new Color(EmotionRegistry.neutral.palette.primary),
+    };
     this.installListeners();
     try {
       this.initializeRenderer();
@@ -181,15 +190,21 @@ export class EmotionScene {
     this.renderer.toneMapping = ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.05;
     this.renderer.setClearColor(0x000000, 0);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, preset.dpr));
+    this.renderer.setPixelRatio(
+      Math.min(window.devicePixelRatio || 1, preset.dpr),
+    );
     this.flow = new FlowField(preset.fieldSize);
-    this.flow.texture.magFilter =
-      this.renderer.extensions.has("OES_texture_float_linear")
-        ? LinearFilter
-        : NearestFilter;
+    this.flow.texture.magFilter = this.renderer.extensions.has(
+      "OES_texture_float_linear",
+    )
+      ? LinearFilter
+      : NearestFilter;
     this.flow.texture.minFilter = this.flow.texture.magFilter;
     this.canvas.addEventListener("webglcontextlost", this.onContextLost);
-    this.canvas.addEventListener("webglcontextrestored", this.onContextRestored);
+    this.canvas.addEventListener(
+      "webglcontextrestored",
+      this.onContextRestored,
+    );
   }
 
   private initializeContent() {
@@ -202,11 +217,17 @@ export class EmotionScene {
     fill.position.set(2.2, -0.8, 2.1);
     this.scene.add(fill);
 
-    this.active = createEmotionEntity("neutral", this.quality as Quality);
-    this.active.setFlowTexture(this.flow!.texture);
+    this.active = this.createEntity("neutral");
     this.scene.add(this.active.object);
     this.createParticles();
     this.configureComposer();
+  }
+
+  private createEntity(label: "neutral" | "happiness" | "anger") {
+    const entity = createEmotionEntity(label, this.quality as Quality);
+    entity.setFlowTexture(this.flow!.texture);
+    entity.setPixelRatio(this.renderer?.getPixelRatio() ?? 1);
+    return entity;
   }
 
   private configureComposer() {
@@ -247,13 +268,15 @@ export class EmotionScene {
   }
 
   setEmotion(label: EmotionLabel, now = performance.now()) {
-    if (this.failed || this.disposed || !EmotionRegistry[label].implemented) return;
+    if (this.failed || this.disposed || !EmotionRegistry[label].implemented)
+      return;
     const before = this.transitions.incoming;
     const started = this.transitions.request(label, now);
     if (!started) return;
     if (before) return;
-    this.incoming = createEmotionEntity(label as "neutral" | "happiness" | "anger", this.quality as Quality);
-    this.incoming.setFlowTexture(this.flow!.texture);
+    this.incoming = this.createEntity(
+      label as "neutral" | "happiness" | "anger",
+    );
     this.incoming.setOpacity(0);
     this.scene.add(this.incoming.object);
   }
@@ -274,8 +297,24 @@ export class EmotionScene {
         Math.min(window.devicePixelRatio || 1, QUALITY_PRESETS[quality].dpr),
       );
     }
-    this.active?.setFlowTexture(this.flow.texture);
-    this.incoming?.setFlowTexture(this.flow.texture);
+    // Rebuild only the visual entities so quality also changes the surface cloud budget.
+    if (this.active) {
+      this.scene.remove(this.active.object);
+      this.active.dispose();
+      this.active = this.createEntity(
+        this.transitions.current as "neutral" | "happiness" | "anger",
+      );
+      this.scene.add(this.active.object);
+    }
+    if (this.incoming && this.transitions.incoming) {
+      this.scene.remove(this.incoming.object);
+      this.incoming.dispose();
+      this.incoming = this.createEntity(
+        this.transitions.incoming as "neutral" | "happiness" | "anger",
+      );
+      this.incoming.setOpacity(0);
+      this.scene.add(this.incoming.object);
+    }
     this.createParticles();
     oldFlow?.dispose();
     this.configureComposer();
@@ -299,7 +338,11 @@ export class EmotionScene {
       this.pointerId = event.pointerId;
       this.canvas.setPointerCapture?.(event.pointerId);
     }
-    this.lastPointer = { x: event.clientX, y: event.clientY, at: event.timeStamp };
+    this.lastPointer = {
+      x: event.clientX,
+      y: event.clientY,
+      at: event.timeStamp,
+    };
   };
 
   private readonly onPointerMove = (event: PointerEvent) => {
@@ -307,26 +350,40 @@ export class EmotionScene {
     if (isTouch && this.pointerId !== event.pointerId) return;
     const rect = this.canvas.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
-    const elapsed = Math.max(8, event.timeStamp - (this.lastPointer?.at ?? event.timeStamp - 16));
-    const prior = this.lastPointer ?? { x: event.clientX, y: event.clientY, at: event.timeStamp - elapsed };
+    const elapsed = Math.max(
+      8,
+      event.timeStamp - (this.lastPointer?.at ?? event.timeStamp - 16),
+    );
+    const prior = this.lastPointer ?? {
+      x: event.clientX,
+      y: event.clientY,
+      at: event.timeStamp - elapsed,
+    };
     const uv = new Vector2(
       Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width)),
       Math.max(0, Math.min(1, 1 - (event.clientY - rect.top) / rect.height)),
     );
     const velocity = new Vector2(
-      ((event.clientX - prior.x) / rect.width / (elapsed / 1000)) * 0.08,
-      ((prior.y - event.clientY) / rect.height / (elapsed / 1000)) * 0.08,
+      ((event.clientX - prior.x) / rect.width / (elapsed / 1000)) * 0.32,
+      ((prior.y - event.clientY) / rect.height / (elapsed / 1000)) * 0.32,
     );
     if (velocity.length() > 2) velocity.setLength(2);
     this.flow?.splat(uv, velocity);
     this.pointerNdc.set(uv.x * 2 - 1, uv.y * 2 - 1);
     this.raycaster.setFromCamera(this.pointerNdc, this.camera);
-    const point = this.raycaster.ray.intersectPlane(this.interactionPlane, this.interactionPoint);
+    const point = this.raycaster.ray.intersectPlane(
+      this.interactionPlane,
+      this.interactionPoint,
+    );
     if (point) {
       this.active?.onPointerForce(point, velocity);
       this.incoming?.onPointerForce(point, velocity);
     }
-    this.lastPointer = { x: event.clientX, y: event.clientY, at: event.timeStamp };
+    this.lastPointer = {
+      x: event.clientX,
+      y: event.clientY,
+      at: event.timeStamp,
+    };
   };
 
   private readonly onPointerUp = (event: PointerEvent) => {
@@ -334,13 +391,19 @@ export class EmotionScene {
     this.lastPointer = null;
   };
 
-  private readonly onPointerCancel = (event: PointerEvent) => this.onPointerUp(event);
+  private readonly onPointerCancel = (event: PointerEvent) =>
+    this.onPointerUp(event);
+  private readonly onPointerLeave = () => {
+    if (this.pointerId === null) this.lastPointer = null;
+  };
 
   private readonly onContextLost = (event: Event) => {
     event.preventDefault();
     this.lost = true;
     this.stopFrame();
-    this.callbacks.fallback("3D 画面遇到图形上下文中断，摄像头和识别仍可继续。");
+    this.callbacks.fallback(
+      "3D 画面遇到图形上下文中断，摄像头和识别仍可继续。",
+    );
   };
 
   private readonly onContextRestored = () => {
@@ -366,11 +429,24 @@ export class EmotionScene {
   };
 
   private installListeners() {
-    this.canvas.addEventListener("pointerdown", this.onPointerDown, { passive: true });
-    this.canvas.addEventListener("pointermove", this.onPointerMove, { passive: true });
-    this.canvas.addEventListener("pointerup", this.onPointerUp, { passive: true });
-    this.canvas.addEventListener("pointercancel", this.onPointerCancel, { passive: true });
-    this.canvas.addEventListener("lostpointercapture", this.onPointerCancel, { passive: true });
+    this.canvas.addEventListener("pointerdown", this.onPointerDown, {
+      passive: true,
+    });
+    this.canvas.addEventListener("pointermove", this.onPointerMove, {
+      passive: true,
+    });
+    this.canvas.addEventListener("pointerup", this.onPointerUp, {
+      passive: true,
+    });
+    this.canvas.addEventListener("pointercancel", this.onPointerCancel, {
+      passive: true,
+    });
+    this.canvas.addEventListener("pointerleave", this.onPointerLeave, {
+      passive: true,
+    });
+    this.canvas.addEventListener("lostpointercapture", this.onPointerCancel, {
+      passive: true,
+    });
     document.addEventListener("visibilitychange", this.onVisibility);
     this.resizeObserver = new ResizeObserver(() => this.resize());
     this.resizeObserver.observe(this.host);
@@ -381,11 +457,17 @@ export class EmotionScene {
     const width = Math.max(1, this.host.clientWidth);
     const height = Math.max(1, this.host.clientHeight);
     this.camera.aspect = width / height;
+    // Preserve the sculpture's width on portrait screens, without cropping its petals.
+    this.camera.position.z = Math.max(
+      5.3,
+      2.95 / (2 * Math.tan(Math.PI / 10) * this.camera.aspect),
+    );
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(width, height, false);
     this.composer?.setSize(width, height);
     if (this.particleMaterial)
-      this.particleMaterial.uniforms.uPixelRatio!.value = this.renderer.getPixelRatio();
+      this.particleMaterial.uniforms.uPixelRatio!.value =
+        this.renderer.getPixelRatio();
   }
 
   private start() {
@@ -409,8 +491,18 @@ export class EmotionScene {
 
   private readonly renderFrame = (now: number) => {
     this.frame = 0;
+    try {
+      this.drawFrame(now);
+    } catch (error) {
+      this.fail(error);
+    }
+  };
+
+  private drawFrame(now: number) {
     if (this.disposed || this.failed || this.lost || !this.renderer) return;
-    const dt = this.previousTime ? Math.min(0.05, Math.max(0, (now - this.previousTime) / 1000)) : 0;
+    const dt = this.previousTime
+      ? Math.min(0.05, Math.max(0, (now - this.previousTime) / 1000))
+      : 0;
     this.previousTime = now;
     if (!this.reducedMotion) this.animationTime += dt;
     this.flow?.step(dt);
@@ -429,13 +521,19 @@ export class EmotionScene {
         this.incoming = null;
         this.active.setOpacity(1);
         this.transitions.advance(now);
-        this.palette.value.set(EmotionRegistry[this.transitions.current].palette.primary);
+        this.palette.value.set(
+          EmotionRegistry[this.transitions.current].palette.primary,
+        );
         if (this.particleMaterial)
-          (this.particleMaterial.uniforms.uColor!.value as Color).copy(this.palette.value);
+          (this.particleMaterial.uniforms.uColor!.value as Color).copy(
+            this.palette.value,
+          );
         if (this.transitions.incoming) {
-          const label = this.transitions.incoming as "neutral" | "happiness" | "anger";
-          this.incoming = createEmotionEntity(label, this.quality as Quality);
-          this.incoming.setFlowTexture(this.flow!.texture);
+          const label = this.transitions.incoming as
+            | "neutral"
+            | "happiness"
+            | "anger";
+          this.incoming = this.createEntity(label);
           this.incoming.setOpacity(0);
           this.scene.add(this.incoming.object);
         }
@@ -443,16 +541,20 @@ export class EmotionScene {
     }
     if (this.particleMaterial)
       this.particleMaterial.uniforms.uTime!.value = this.animationTime;
-    this.composer ? this.composer.render(dt) : this.renderer.render(this.scene, this.camera);
+    this.composer
+      ? this.composer.render(dt)
+      : this.renderer.render(this.scene, this.camera);
     this.fpsFrames++;
     if (!this.fpsStarted) this.fpsStarted = now;
     if (now - this.fpsStarted >= 1000) {
-      this.callbacks.ready(Math.round((this.fpsFrames * 1000) / (now - this.fpsStarted)));
+      this.callbacks.ready(
+        Math.round((this.fpsFrames * 1000) / (now - this.fpsStarted)),
+      );
       this.fpsStarted = now;
       this.fpsFrames = 0;
     }
     this.start();
-  };
+  }
 
   private fail(error: unknown) {
     this.failed = true;
@@ -495,9 +597,13 @@ export class EmotionScene {
     this.canvas.removeEventListener("pointermove", this.onPointerMove);
     this.canvas.removeEventListener("pointerup", this.onPointerUp);
     this.canvas.removeEventListener("pointercancel", this.onPointerCancel);
+    this.canvas.removeEventListener("pointerleave", this.onPointerLeave);
     this.canvas.removeEventListener("lostpointercapture", this.onPointerCancel);
     this.canvas.removeEventListener("webglcontextlost", this.onContextLost);
-    this.canvas.removeEventListener("webglcontextrestored", this.onContextRestored);
+    this.canvas.removeEventListener(
+      "webglcontextrestored",
+      this.onContextRestored,
+    );
     document.removeEventListener("visibilitychange", this.onVisibility);
   }
 }

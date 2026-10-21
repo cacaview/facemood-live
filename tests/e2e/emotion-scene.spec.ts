@@ -1,6 +1,29 @@
 import { expect, test } from "@playwright/test";
 import { readFileSync } from "node:fs";
 
+test("immersive desktop scene fills the first viewport and supports floating observation panels", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/");
+  const stage = await page.locator(".emotion-stage-shell").boundingBox();
+  const camera = await page.locator(".viewer").boundingBox();
+  const analysis = await page.locator(".results").boundingBox();
+  expect(stage!.width).toBeGreaterThanOrEqual(1400);
+  expect(stage!.height).toBeGreaterThanOrEqual(850);
+  for (const panel of [camera!, analysis!]) {
+    expect(panel.y).toBeGreaterThan(stage!.y);
+    expect(panel.y + panel.height).toBeLessThan(stage!.y + stage!.height);
+  }
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(
+    page.getByRole("button", { name: "开心 · 绽放花体", exact: true }),
+  ).toBeVisible();
+  expect(
+    await page.evaluate(() => document.documentElement.scrollWidth),
+  ).toBeLessThanOrEqual(390);
+});
+
 async function waitForSceneInitialization(
   page: import("@playwright/test").Page,
 ) {
@@ -11,11 +34,61 @@ async function waitForSceneInitialization(
   await expect(status).toHaveText(/^3D \d+ FPS$/);
 }
 
+async function waitForModelInitialization(
+  page: import("@playwright/test").Page,
+) {
+  await expect(page.getByRole("status")).toContainText("模型已就绪", {
+    timeout: 100000,
+  });
+}
+
+test("quality changes keep rendering without reactive Three.js proxy errors", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto("/");
+  await waitForSceneInitialization(page);
+  const quality = page.getByRole("combobox", { name: "3D 画质" });
+  for (const preset of ["high", "low", "medium"]) {
+    await quality.selectOption(preset);
+    await page.waitForTimeout(500);
+    expect(errors).toEqual([]);
+    await expect(page.locator(".emotion-scene-fallback")).toHaveCount(0);
+  }
+});
+
+test("a runtime render exception falls back locally and keeps input controls usable", async ({
+  page,
+}) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto("/");
+  await waitForSceneInitialization(page);
+  await page.locator(".emotion-scene-canvas").evaluate((node) => {
+    const gl = (node as HTMLCanvasElement).getContext("webgl2")!;
+    gl.drawArrays = () => {
+      throw new Error("simulated render failure");
+    };
+  });
+  await expect(page.locator(".emotion-scene-host")).toHaveClass(/has-fallback/);
+  await expect(page.locator(".emotion-scene-fallback")).toContainText(
+    "simulated render failure",
+  );
+  await expect(
+    page.getByRole("button", { name: "内置样例", exact: true }),
+  ).toBeEnabled();
+  expect(errors).toEqual([]);
+});
+
 test("emotion preview changes visual entities without changing inference controls", async ({
   page,
 }) => {
   await page.goto("/");
   const stage = page.locator(".emotion-stage-shell");
+  // Camera enablement depends on the independent 35 MB model initialization,
+  // not on scene readiness or a fixed five-second rendering window.
+  await waitForModelInitialization(page);
   await expect(stage).toHaveAttribute("data-emotion", "neutral");
 
   await page
@@ -47,6 +120,7 @@ test("scene pause and reduced motion leave camera and export usable", async ({
   page,
 }) => {
   await page.goto("/");
+  await waitForModelInitialization(page);
   await page.getByRole("button", { name: "暂停 3D", exact: true }).click();
   await expect(page.getByText("3D 画面已暂停", { exact: false })).toBeVisible();
   await page.getByLabel("减少动态效果").check();
@@ -298,6 +372,7 @@ test("WebGL context loss uses a local fallback and restores the scene", async ({
   page,
 }) => {
   await page.goto("/");
+  await waitForModelInitialization(page);
   const host = page.locator(".emotion-scene-host");
   if (await page.locator(".emotion-scene-fallback").isVisible())
     test.skip(true, "WebGL2 is unavailable in this browser");

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from "vue";
+import { onBeforeUnmount, onMounted, ref, shallowRef, watch } from "vue";
 import type { EmotionLabel } from "./controller";
 import type { QualityPreset } from "./scene-logic";
 import type { EmotionScene as EmotionSceneEngine } from "./scene";
@@ -19,7 +19,8 @@ const emit = defineEmits<{
 const host = ref<HTMLElement | null>(null);
 const canvas = ref<HTMLCanvasElement | null>(null);
 const errorMessage = ref("");
-const engine = ref<EmotionSceneEngine | null>(null);
+// Three.js matrices contain non-configurable fields and must never be deeply proxied.
+const engine = shallowRef<EmotionSceneEngine | null>(null);
 let disposed = false;
 
 onMounted(async () => {
@@ -51,10 +52,22 @@ onMounted(async () => {
   }
 });
 
-watch(() => props.label, (label) => engine.value?.setEmotion(label));
-watch(() => props.enabled, (enabled) => engine.value?.setEnabled(enabled));
-watch(() => props.quality, (quality) => engine.value?.setQuality(quality));
-watch(() => props.reducedMotion, (value) => engine.value?.setReducedMotion(value));
+watch(
+  () => props.label,
+  (label) => engine.value?.setEmotion(label),
+);
+watch(
+  () => props.enabled,
+  (enabled) => engine.value?.setEnabled(enabled),
+);
+watch(
+  () => props.quality,
+  (quality) => engine.value?.setQuality(quality),
+);
+watch(
+  () => props.reducedMotion,
+  (value) => engine.value?.setReducedMotion(value),
+);
 
 onBeforeUnmount(() => {
   disposed = true;
@@ -64,8 +77,16 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="host" class="emotion-scene-host" :class="{ 'has-fallback': errorMessage }">
-    <canvas ref="canvas" class="emotion-scene-canvas" aria-label="可交互的三维情绪形态" />
+  <div
+    ref="host"
+    class="emotion-scene-host"
+    :class="{ 'has-fallback': errorMessage }"
+  >
+    <canvas
+      ref="canvas"
+      class="emotion-scene-canvas"
+      aria-label="可交互的三维情绪形态"
+    />
     <div v-if="errorMessage" class="emotion-scene-fallback" aria-live="polite">
       {{ errorMessage }}
     </div>

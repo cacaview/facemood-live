@@ -6,3 +6,8 @@
 - Three.js runtime: `three@0.186.1`, MIT License. Package source and license are distributed through npm; see `node_modules/three/LICENSE` in an installed checkout.
 - Three.js type declarations: `@types/three@0.186.0`, MIT License. See the package metadata and license in npm's package distribution.
 - There are no external GLB assets in this MVP. `EmotionRegistry` reserves optional URL and license fields for future per-label assets. Each future asset must include verified source URL, author, exact license, and any required attribution here before inclusion.
+
+## Immersive particle revision — 2026-10-21
+
+- Surface triangle sampling, translucent filament shaders, glow sprites and the soft aureole in `src/emotion/sculpture-particles.ts` and `src/emotion/entities.ts` are authored for this project. They use no downloaded textures, meshes, or reference-site source code.
+- The user supplied a video as an aesthetic reference for luminous particle organisms and a full-screen composition. The video, screenshots of its websites, branding, and third-party models are not redistributed in the application.
