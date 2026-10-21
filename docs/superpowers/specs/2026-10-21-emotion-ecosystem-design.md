@@ -47,7 +47,7 @@ Pointer Events 覆盖鼠标和触屏：坐标归一化，经 Raycaster 投影到
 
 ## 质量与容错
 
-预算初值：low 1000 粒子 / DPR 1 / 64 场网格 / 无 bloom；medium 3000 / DPR 1.25 / 64 / 无 bloom；high 8000 / DPR 1.5 / 128 / 可选 bloom。移动端从 medium 或 low 开始，用户可手动覆盖。自动降档依据持续渲染帧耗时，设观察窗口与冷却，避免频繁重建；界面展示实际档位。
+预算初值：low 1000 粒子 / DPR 1 / 64 场网格 / 无 bloom；medium 3000 / DPR 1.25 / 64 / 无 bloom；high 8000 / DPR 1.5 / 128 / 可选 bloom。首阶段由用户手动在 low / medium / high 预设间切换，避免因短时帧抖动频繁重建；依据持续帧耗时的观察窗口和冷却机制进行自动降档，作为后续增强，不计入首阶段验收。界面展示实际档位。
 
 检测无 WebGL2 或 context lost 时停止帧循环并降级，识别仍可使用。context restored 后最多保留一个 renderer/循环并尝试重建；重建失败提供明确静态降级。resize、卸载和画质改变释放 listener、RAF、纹理、几何、材质、后期 target 与 renderer。
 

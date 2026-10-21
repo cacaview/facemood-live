@@ -23,8 +23,17 @@ export class EmotionTransition {
 
   constructor(
     public current: EmotionLabel,
-    readonly duration = 1000,
+    private duration = 1000,
   ) {}
+
+  setDuration(duration: number, now: number) {
+    const nextDuration = Math.max(1, duration);
+    if (this.incoming) {
+      const currentProgress = this.progress(now);
+      this.startedAt = now - currentProgress * nextDuration;
+    }
+    this.duration = nextDuration;
+  }
 
   request(label: EmotionLabel, now: number): boolean {
     if (this.incoming) {

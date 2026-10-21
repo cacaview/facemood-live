@@ -1,6 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdtempSync,
+  mkdirSync,
+  rmSync,
+  symlinkSync,
+  unlinkSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
@@ -53,9 +60,28 @@ test("allows only named build outputs and rollback scratch paths", () => {
     false,
   );
   assert.equal(
+    isAllowedOutputDirectory(join(root, "..", "rollback-outside")),
+    false,
+  );
+  assert.equal(
     isAllowedOutputDirectory(
       join(root, ".superpowers", "sdd", "plan", "notes"),
     ),
     false,
   );
+});
+
+test("rejects rollback outputs beneath a symlinked scratch directory", () => {
+  const root = process.cwd();
+  const scratch = join(root, ".superpowers", "sdd");
+  const external = mkdtempSync(join(tmpdir(), "facemood-rollback-target-"));
+  const link = join(scratch, "rollback-symlink-test");
+  mkdirSync(scratch, { recursive: true });
+  try {
+    symlinkSync(external, link, "dir");
+    assert.equal(isAllowedOutputDirectory(join(link, "rollback-probe")), false);
+  } finally {
+    unlinkSync(link);
+    rmSync(external, { recursive: true, force: true });
+  }
 });

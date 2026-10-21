@@ -58,6 +58,25 @@ test("scene pause and reduced motion leave camera and export usable", async ({
   ).toBeVisible();
 });
 
+test("system reduced-motion preference pauses and resumes the visual cycle", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const stage = page.locator(".emotion-stage-shell");
+  await page.getByRole("button", { name: "三形态轮播", exact: true }).click();
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect(page.getByLabel("减少动态效果")).toBeChecked();
+  const pausedEmotion = await stage.getAttribute("data-emotion");
+  await page.waitForTimeout(3700);
+  await expect(stage).toHaveAttribute("data-emotion", pausedEmotion!);
+
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await expect(page.getByLabel("减少动态效果")).not.toBeChecked();
+  await expect(stage).not.toHaveAttribute("data-emotion", pausedEmotion!, {
+    timeout: 4200,
+  });
+});
+
 test("pointer drag changes the flow-driven scene while reduced motion is enabled", async ({
   page,
 }) => {
@@ -90,6 +109,189 @@ test("pointer drag changes the flow-driven scene while reduced motion is enabled
   await page.waitForTimeout(120);
   const after = await canvas.screenshot();
   expect(after.equals(before)).toBe(false);
+});
+
+test("touch pointer disturbance survives pointer cancellation and scene resize", async ({
+  page,
+}) => {
+  await page.goto("/");
+  if (await page.locator(".emotion-scene-fallback").isVisible())
+    test.skip(true, "WebGL2 is unavailable in this browser");
+  await waitForSceneInitialization(page);
+  await page.getByLabel("减少动态效果").check();
+  const canvas = page.locator(".emotion-scene-canvas");
+  await expect(canvas).toBeVisible();
+  const pageErrors: string[] = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+  const before = await canvas.screenshot();
+  const bounds = await canvas.boundingBox();
+  if (!bounds) throw new Error("3D canvas has no visible bounds");
+  await canvas.evaluate((node, rect) => {
+    const target = node as HTMLCanvasElement;
+    // Synthetic PointerEvents cannot acquire native capture; the scene still
+    // receives the same touch lifecycle events used by a browser gesture.
+    target.setPointerCapture = () => {};
+    const fire = (
+      type: string,
+      pointerId: number,
+      x: number,
+      y: number,
+      buttons: number,
+    ) =>
+      target.dispatchEvent(
+        new PointerEvent(type, {
+          bubbles: true,
+          pointerId,
+          pointerType: "touch",
+          isPrimary: true,
+          buttons,
+          clientX: x,
+          clientY: y,
+        }),
+      );
+    fire(
+      "pointerdown",
+      17,
+      rect.x + rect.width * 0.35,
+      rect.y + rect.height * 0.4,
+      1,
+    );
+    fire(
+      "pointermove",
+      17,
+      rect.x + rect.width * 0.42,
+      rect.y + rect.height * 0.46,
+      1,
+    );
+    fire(
+      "pointermove",
+      17,
+      rect.x + rect.width * 0.54,
+      rect.y + rect.height * 0.53,
+      1,
+    );
+    fire(
+      "pointercancel",
+      17,
+      rect.x + rect.width * 0.54,
+      rect.y + rect.height * 0.53,
+      0,
+    );
+    fire(
+      "lostpointercapture",
+      17,
+      rect.x + rect.width * 0.54,
+      rect.y + rect.height * 0.53,
+      0,
+    );
+    fire(
+      "pointerdown",
+      18,
+      rect.x + rect.width * 0.42,
+      rect.y + rect.height * 0.48,
+      1,
+    );
+    fire(
+      "pointermove",
+      18,
+      rect.x + rect.width * 0.5,
+      rect.y + rect.height * 0.55,
+      1,
+    );
+    fire(
+      "pointerup",
+      18,
+      rect.x + rect.width * 0.5,
+      rect.y + rect.height * 0.55,
+      0,
+    );
+    fire(
+      "lostpointercapture",
+      18,
+      rect.x + rect.width * 0.5,
+      rect.y + rect.height * 0.55,
+      0,
+    );
+  }, bounds);
+  await page.waitForTimeout(120);
+  const after = await canvas.screenshot();
+  expect(after.equals(before)).toBe(false);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await expect(canvas).toBeVisible();
+  await expect
+    .poll(async () => (await canvas.boundingBox())?.width ?? 0)
+    .toBeGreaterThan(0);
+
+  await page.waitForTimeout(400);
+  await canvas.evaluate((node) => {
+    const gl = (node as HTMLCanvasElement).getContext("webgl2");
+    if (!gl) throw new Error("WebGL2 context disappeared");
+    let drawCount = 0;
+    const originalDrawArrays = gl.drawArrays.bind(gl);
+    const originalDrawElements = gl.drawElements.bind(gl);
+    (gl as any).drawArrays = (...args: any[]) => {
+      drawCount++;
+      return originalDrawArrays(...args);
+    };
+    (gl as any).drawElements = (...args: any[]) => {
+      drawCount++;
+      return originalDrawElements(...args);
+    };
+    (window as any).__emotionDrawCount = () => drawCount;
+  });
+  await page.waitForTimeout(120);
+  const drawsBeforeBackground = await page.evaluate(() =>
+    (window as any).__emotionDrawCount(),
+  );
+  expect(drawsBeforeBackground).toBeGreaterThan(0);
+  await page.evaluate(() => {
+    Object.defineProperty(document, "hidden", {
+      configurable: true,
+      value: true,
+    });
+    document.dispatchEvent(new Event("visibilitychange"));
+  });
+  expect(await page.evaluate(() => document.hidden)).toBe(true);
+  const resizedBounds = await canvas.boundingBox();
+  if (!resizedBounds) throw new Error("3D canvas lost its bounds after resize");
+  await canvas.evaluate((node, rect) => {
+    const target = node as HTMLCanvasElement;
+    const move = (x: number, y: number) =>
+      target.dispatchEvent(
+        new PointerEvent("pointermove", {
+          bubbles: true,
+          pointerType: "mouse",
+          clientX: x,
+          clientY: y,
+        }),
+      );
+    move(rect.x + rect.width * 0.42, rect.y + rect.height * 0.48);
+    move(rect.x + rect.width * 0.53, rect.y + rect.height * 0.55);
+  }, resizedBounds);
+  await page.waitForTimeout(120);
+  const drawsSettledInBackground = await page.evaluate(() =>
+    (window as any).__emotionDrawCount(),
+  );
+  await page.waitForTimeout(120);
+  const drawsWhileBackground = await page.evaluate(() =>
+    (window as any).__emotionDrawCount(),
+  );
+  expect(drawsWhileBackground).toBe(drawsSettledInBackground);
+  await page.evaluate(() => {
+    Object.defineProperty(document, "hidden", {
+      configurable: true,
+      value: false,
+    });
+    document.dispatchEvent(new Event("visibilitychange"));
+  });
+  expect(await page.evaluate(() => document.hidden)).toBe(false);
+  await page.waitForTimeout(120);
+  const drawsAfterBackground = await page.evaluate(() =>
+    (window as any).__emotionDrawCount(),
+  );
+  expect(drawsAfterBackground).toBeGreaterThan(drawsWhileBackground);
+  expect(pageErrors).toEqual([]);
 });
 
 test("WebGL context loss uses a local fallback and restores the scene", async ({

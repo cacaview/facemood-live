@@ -154,6 +154,7 @@ export class EmotionScene {
   ) {
     this.quality = quality;
     this.reducedMotion = reducedMotion;
+    this.transitions.setDuration(reducedMotion ? 180 : 1000, performance.now());
     this.camera.position.set(0, 0, 5.3);
     this.palette = { value: new Color(EmotionRegistry.neutral.palette.primary) };
     this.installListeners();
@@ -284,6 +285,7 @@ export class EmotionScene {
 
   setReducedMotion(value: boolean) {
     this.reducedMotion = value;
+    this.transitions.setDuration(value ? 180 : 1000, performance.now());
   }
 
   setEnabled(value: boolean) {
@@ -412,8 +414,9 @@ export class EmotionScene {
     this.previousTime = now;
     if (!this.reducedMotion) this.animationTime += dt;
     this.flow?.step(dt);
-    this.active?.update(dt, this.animationTime);
-    this.incoming?.update(dt, this.animationTime);
+    const ambientMotion = this.reducedMotion ? 0 : 1;
+    this.active?.update(dt, this.animationTime, ambientMotion);
+    this.incoming?.update(dt, this.animationTime, ambientMotion);
     if (this.incoming && this.active) {
       const progress = this.transitions.progress(now);
       const eased = progress * progress * (3 - 2 * progress);

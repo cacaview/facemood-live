@@ -21,7 +21,7 @@ import type { Quality } from "./registry";
 
 export type EmotionEntity = {
   object: Group;
-  update(dt: number, time: number): void;
+  update(dt: number, time: number, motionScale?: number): void;
   onPointerForce(point: Vector3, velocity: Vector2): void;
   setFlowTexture(texture: Texture): void;
   setOpacity(value: number): void;
@@ -256,8 +256,9 @@ export function createEmotionEntity(
 
   return {
     object: group,
-    update(dt, time) {
+    update(dt, time, motionScale = 1) {
       const step = Math.min(Math.max(dt, 0), 0.05);
+      const ambientMotion = Math.max(0, Math.min(1, motionScale));
       agitation *= Math.exp(-3.1 * step);
       for (const material of materials) {
         const uniforms = material.userData.flowUniforms as FlowUniforms;
@@ -270,7 +271,7 @@ export function createEmotionEntity(
         group.rotation.y = Math.sin(time * 0.28) * 0.16 + impulseDirection.x * agitation * 0.06;
         group.rotation.z = Math.sin(time * 0.38) * 0.025;
         group.children.forEach((child) => {
-          if (child.userData.orbit) child.rotation.z += step * 0.12;
+          if (child.userData.orbit) child.rotation.z += step * 0.12 * ambientMotion;
           if (child.userData.layer !== undefined)
             child.rotation.y = Math.sin(time * 0.3 + child.userData.layer) * 0.12;
         });
@@ -299,7 +300,7 @@ export function createEmotionEntity(
               base.y * spread + Math.sin(time * 0.7 + phase) * 0.012 + impulseDirection.y * agitation * 0.08,
               base.z + impulseDirection.z * agitation * 0.06,
             );
-            child.rotation.x += step * 0.05;
+            child.rotation.x += step * 0.05 * ambientMotion;
           }
         });
       }

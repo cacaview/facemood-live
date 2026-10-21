@@ -2,7 +2,7 @@
 
 Recorded: 2026-10-21 (Asia/Shanghai)
 
-This is a browser automation observation, not a hardware performance acceptance. The browser reported an ANGLE WebGL2 renderer backed by **SwiftShader (software rendering)**. It does not measure the Mac's physical GPU, and the mobile row below is a viewport emulation rather than an iPhone.
+The headless benchmark is a browser automation observation, not a hardware performance acceptance: it reported ANGLE WebGL2 backed by **SwiftShader (software rendering)**. A separate interactive Edge desktop sample is listed in the results, but its GPU identity was unavailable. The mobile row is a viewport emulation rather than an iPhone.
 
 ## Environment and method
 
@@ -15,12 +15,13 @@ This is a browser automation observation, not a hardware performance acceptance.
 
 ## Results
 
-| Build / viewport                  | Page animation FPS | Scene FPS | Interpretation                                                                       |
-| --------------------------------- | -----------------: | --------: | ------------------------------------------------------------------------------------ |
-| Baseline, 1440×900                |                 60 |         — | Existing page, no emotion scene                                                      |
-| Branch, 1440×900                  |                 22 |        22 | Scene enabled under SwiftShader; below the desktop target, not a physical-GPU result |
-| Branch, 390×844 emulated viewport |                 58 |        58 | Layout/render observation only; does not represent iPhone Safari                     |
-| Branch, scene paused, 1440×900    |                 60 |         — | Confirms the app page itself remained responsive in this software-rendered run       |
+| Build / viewport                                         | Page animation FPS | Scene FPS | Interpretation                                                                                                                                                                                                              |
+| -------------------------------------------------------- | -----------------: | --------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Baseline, 1440×900                                       |                 60 |         — | Existing page, no emotion scene                                                                                                                                                                                             |
+| Branch, 1440×900                                         |                 22 |        22 | Scene enabled under SwiftShader; below the desktop target, not a physical-GPU result                                                                                                                                        |
+| Branch, 390×844 emulated viewport                        |                 58 |        58 | Layout/render observation only; does not represent iPhone Safari                                                                                                                                                            |
+| Branch, interactive Edge desktop session, 1117×408 scene |              58–60 |     58–60 | Ten one-second UI samples at medium quality / 3000 particles; camera and inference idle. Browser-reported GPU identity was unavailable, so this is an interactive desktop observation, not verified hardware-GPU acceptance |
+| Branch, scene paused, 1440×900                           |                 60 |         — | Confirms the app page itself remained responsive in this software-rendered run                                                                                                                                              |
 
 The scene-on SwiftShader result is a concrete performance issue to check on actual GPUs. Do not infer that the desktop target passes from the emulated mobile row. Reduced quality did not materially change the desktop software-render result in the exploratory run; this is not enough evidence to tune hardware presets.
 
@@ -28,8 +29,8 @@ The scene-on SwiftShader result is a concrete performance issue to check on actu
 
 | Metric                                 | Result                                                                                                                      |
 | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Lazy scene JavaScript chunk            | 565.40 KB minified / 141.66 KB gzip                                                                                         |
-| Main app JavaScript                    | 39.06 KB gzip                                                                                                               |
+| Lazy scene JavaScript chunk            | 565.71 KB minified / 141.75 KB gzip                                                                                         |
+| Main app JavaScript                    | 39.15 KB gzip                                                                                                               |
 | Third-party GLB models                 | None; the three initial forms are procedural                                                                                |
 | Existing baseline model size           | 35 MB baseline referenced by the project handover; its network request was deliberately blocked in this isolated render run |
 | Cold/hot first usable time             | Not measured in this render-isolation run                                                                                   |
@@ -41,11 +42,11 @@ Existing inference behavior was covered by the app's Playwright worker/model int
 
 ## Functional verification
 
-- Vitest: 44/44 passed.
-- Playwright: 14/14 passed in the final run; the context-loss case passed three additional consecutive runs after the test was changed to wait for asynchronous scene initialization.
+- Vitest: 46/46 passed.
+- Playwright: 16/16 passed in the final run, including system reduced-motion cycle pause/resume and synthetic touch pointer disturbance, cancellation, release/lost-capture, visibility recovery, and responsive resize coverage. The context-loss case passed three additional consecutive runs after the test was changed to wait for asynchronous scene initialization.
 - Production build and TypeScript checking: passed.
-- Visual rollback tests: 3/3 passed; a disposable baseline rebuild matched the recorded SHA-256.
+- Visual rollback tests: 4/4 passed, including rejection of output paths beneath symlinked directories; a disposable baseline rebuild matched the recorded SHA-256.
 
 ## Acceptance limits
 
-No physical desktop GPU or iPhone Safari session was available for this measurement. The desktop 50–60 FPS and phone 24–30 FPS targets are therefore **not accepted**. No claim is made about first-screen time, the 35 MB model download, real camera FPS, 10/30 minute stability, thermal behavior, memory growth, or GPU utilization. Repeat the measurement on a hardware-accelerated desktop browser and a real iPhone Safari device before expanding the visual phase or claiming the performance targets.
+The Edge sample reached 58–60 FPS, but the GPU identity was not verified and no camera inference ran with the scene. No hardware-verified desktop GPU or iPhone Safari run is available, so the desktop 50–60 FPS and phone 24–30 FPS targets are **not accepted**. No claim is made about first-screen time, the 35 MB model download, real camera FPS, 10/30 minute stability, thermal behavior, memory growth, or GPU utilization. Repeat the measurement on a verified hardware-accelerated desktop browser and a real iPhone Safari device before expanding the visual phase or claiming the performance targets.

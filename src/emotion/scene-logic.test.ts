@@ -14,6 +14,16 @@ describe("emotion scene logic", () => {
     expect(transitionProgress(100, 1400, 1000)).toBe(1);
   });
 
+  it("keeps crossfade progress continuous when the motion setting changes", () => {
+    const transition = new EmotionTransition("neutral", 1000);
+    transition.request("happiness", 0);
+    expect(transition.progress(500)).toBe(0.5);
+    transition.setDuration(180, 500);
+    expect(transition.progress(500)).toBe(0.5);
+    expect(transition.progress(590)).toBe(1);
+    expect(transition.advance(590)).toBe("happiness");
+  });
+
   it("coalesces rapid emotion requests while keeping at most two entities", () => {
     const transition = new EmotionTransition("neutral", 1000);
     expect(transition.request("happiness", 0)).toBe(true);

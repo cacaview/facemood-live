@@ -83,12 +83,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5092,
+                  "duration": 4679,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-21T07:35:47.660Z",
+                  "startTime": "2026-10-21T08:04:43.732Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -117,12 +117,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 7107,
+                  "duration": 6655,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-21T07:35:52.960Z",
+                  "startTime": "2026-10-21T08:04:48.577Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -151,12 +151,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 4655,
+                  "duration": 4507,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-21T07:36:00.081Z",
+                  "startTime": "2026-10-21T08:04:55.248Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -185,12 +185,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 7059,
+                  "duration": 6876,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-21T07:36:04.755Z",
+                  "startTime": "2026-10-21T08:04:59.769Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -219,12 +219,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5784,
+                  "duration": 5297,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-21T07:36:11.831Z",
+                  "startTime": "2026-10-21T08:05:06.656Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -253,12 +253,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5357,
+                  "duration": 4944,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-21T07:36:17.630Z",
+                  "startTime": "2026-10-21T08:05:11.969Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -287,12 +287,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5623,
+                  "duration": 4607,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-21T07:36:23.002Z",
+                  "startTime": "2026-10-21T08:05:16.925Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -321,12 +321,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 6170,
+                  "duration": 4574,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-21T07:36:28.638Z",
+                  "startTime": "2026-10-21T08:05:21.542Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -355,12 +355,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5207,
+                  "duration": 4018,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-21T07:36:34.822Z",
+                  "startTime": "2026-10-21T08:05:26.128Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -397,12 +397,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 8843,
+                  "duration": 7443,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-21T07:36:40.057Z",
+                  "startTime": "2026-10-21T08:05:30.171Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -431,12 +431,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 3611,
+                  "duration": 3478,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-21T07:36:48.913Z",
+                  "startTime": "2026-10-21T08:05:37.625Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -447,6 +447,40 @@
           "id": "04d261cf60bf34398408-c72a475be9022f62681d",
           "file": "emotion-scene.spec.ts",
           "line": 46,
+          "column": 1
+        },
+        {
+          "title": "system reduced-motion preference pauses and resumes the visual cycle",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8397,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-21T08:05:41.113Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04d261cf60bf34398408-3dc205a11c44120da89b",
+          "file": "emotion-scene.spec.ts",
+          "line": 61,
           "column": 1
         },
         {
@@ -465,12 +499,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 4185,
+                  "duration": 3972,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-21T07:36:52.536Z",
+                  "startTime": "2026-10-21T08:05:49.520Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -480,7 +514,41 @@
           ],
           "id": "04d261cf60bf34398408-986831a7f2e2ac4bc950",
           "file": "emotion-scene.spec.ts",
-          "line": 61,
+          "line": 80,
+          "column": 1
+        },
+        {
+          "title": "touch pointer disturbance survives pointer cancellation and scene resize",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4307,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-21T08:05:53.500Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04d261cf60bf34398408-c9e69b24bc210ee96496",
+          "file": "emotion-scene.spec.ts",
+          "line": 114,
           "column": 1
         },
         {
@@ -499,12 +567,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 4465,
+                  "duration": 4256,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-21T07:36:56.733Z",
+                  "startTime": "2026-10-21T08:05:57.817Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -514,7 +582,7 @@
           ],
           "id": "04d261cf60bf34398408-f8c246219715e6da4100",
           "file": "emotion-scene.spec.ts",
-          "line": 95,
+          "line": 297,
           "column": 1
         },
         {
@@ -533,12 +601,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 885,
+                  "duration": 809,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-21T07:37:01.211Z",
+                  "startTime": "2026-10-21T08:06:02.082Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -548,7 +616,7 @@
           ],
           "id": "04d261cf60bf34398408-6aa782ce9f11c94485a1",
           "file": "emotion-scene.spec.ts",
-          "line": 119,
+          "line": 321,
           "column": 1
         }
       ]
@@ -556,9 +624,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-10-21T07:35:45.845Z",
-    "duration": 76356.61200000001,
-    "expected": 14,
+    "startTime": "2026-10-21T08:04:42.078Z",
+    "duration": 80893.57699999999,
+    "expected": 16,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

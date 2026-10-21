@@ -153,17 +153,23 @@ function clearPrediction() {
   const c = overlay.value;
   c?.getContext("2d")?.clearRect(0, 0, c.width, c.height);
 }
-function setVisualMode(next: VisualEmotionMode) {
-  visualMode.value = next;
+function syncVisualCycle() {
   if (visualCycleTimer !== null) window.clearInterval(visualCycleTimer);
   visualCycleTimer = null;
-  if (next === "cycle") {
-    visualCycleIndex = Math.max(0, prototypeEmotions.indexOf(previewEmotion.value));
-    visualCycleTimer = window.setInterval(() => {
-      visualCycleIndex = (visualCycleIndex + 1) % prototypeEmotions.length;
-      previewEmotion.value = prototypeEmotions[visualCycleIndex]!;
-    }, 3500);
-  }
+  if (visualMode.value !== "cycle" || reducedMotion.value) return;
+  visualCycleIndex = Math.max(0, prototypeEmotions.indexOf(previewEmotion.value));
+  visualCycleTimer = window.setInterval(() => {
+    visualCycleIndex = (visualCycleIndex + 1) % prototypeEmotions.length;
+    previewEmotion.value = prototypeEmotions[visualCycleIndex]!;
+  }, 3500);
+}
+function setVisualMode(next: VisualEmotionMode) {
+  visualMode.value = next;
+  syncVisualCycle();
+}
+function setReducedMotion(value: boolean) {
+  reducedMotion.value = value;
+  syncVisualCycle();
 }
 function selectPreviewEmotion(label: PrototypeEmotion) {
   if (visualCycleTimer !== null) window.clearInterval(visualCycleTimer);
@@ -172,7 +178,10 @@ function selectPreviewEmotion(label: PrototypeEmotion) {
   visualMode.value = "manual";
 }
 function updateMotionPreference(event: MediaQueryListEvent) {
-  reducedMotion.value = event.matches;
+  setReducedMotion(event.matches);
+}
+function onReducedMotionToggle(event: Event) {
+  setReducedMotion((event.currentTarget as HTMLInputElement).checked);
 }
 function onSceneReady(fps: number) {
   sceneFps.value = fps;
@@ -659,7 +668,11 @@ onBeforeUnmount(() => {
               </select>
             </label>
             <label class="emotion-reduced-motion">
-              <input v-model="reducedMotion" type="checkbox" />
+              <input
+                :checked="reducedMotion"
+                type="checkbox"
+                @change="onReducedMotionToggle"
+              />
               减少动态效果
             </label>
             <button @click="sceneEnabled = !sceneEnabled">
@@ -669,6 +682,7 @@ onBeforeUnmount(() => {
         </div>
         <p class="emotion-prototype-note">
           首阶段已实现 3 / 8 种形态；其余 {{ remainingEmotionCount }} 类暂以中性静态形态呈现，待真机性能与交互验收后扩展。
+          <span v-if="reducedMotion && visualMode === 'cycle'">减少动态效果已暂停自动轮播。</span>
           {{ sceneFallback }}
         </p>
       </section>

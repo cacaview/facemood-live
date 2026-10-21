@@ -13,7 +13,15 @@ import {
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { basename, dirname, join, relative, resolve, sep } from "node:path";
+import {
+  basename,
+  dirname,
+  isAbsolute,
+  join,
+  relative,
+  resolve,
+  sep,
+} from "node:path";
 import { fileURLToPath } from "node:url";
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -56,15 +64,38 @@ export function verifyBaselineDigest(manifest, sourceCommit, outputSha256) {
 }
 
 export function isAllowedOutputDirectory(outputDirectory) {
+  const resolvedOutput = resolve(outputDirectory);
+  const fromRoot = relative(repositoryRoot, resolvedOutput);
+  if (
+    isAbsolute(fromRoot) ||
+    fromRoot.startsWith(`..${sep}`) ||
+    fromRoot === ".." ||
+    fromRoot.startsWith(sep)
+  )
+    return false;
+
+  // rmSync follows symlinked ancestors. Check every existing path component,
+  // including dangling symlinks, before accepting any disposable output path.
+  let current = resolvedOutput;
+  while (true) {
+    try {
+      if (lstatSync(current).isSymbolicLink()) return false;
+    } catch (error) {
+      if (error.code !== "ENOENT") throw error;
+    }
+    if (current === repositoryRoot) break;
+    current = dirname(current);
+  }
+
   const standardOutputs = [
     join(repositoryRoot, "dist"),
     join(repositoryRoot, "dist-visual-baseline"),
   ];
-  if (standardOutputs.includes(outputDirectory)) return true;
+  if (standardOutputs.includes(resolvedOutput)) return true;
   const scratchRoot = join(repositoryRoot, ".superpowers", "sdd");
   return (
-    outputDirectory.startsWith(`${scratchRoot}${sep}`) &&
-    /^(baseline-dist|rollback-[a-z0-9-]+)$/.test(basename(outputDirectory))
+    resolvedOutput.startsWith(`${scratchRoot}${sep}`) &&
+    /^(baseline-dist|rollback-[a-z0-9-]+)$/.test(basename(resolvedOutput))
   );
 }
 
