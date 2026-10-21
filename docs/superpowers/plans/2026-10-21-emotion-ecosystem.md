@@ -82,7 +82,8 @@
 **Files:**
 - Create: `src/emotion/EmotionScene.vue`
 - Create: `src/emotion/scene.ts`
-- Create: `src/emotion/scene.test.ts` only for testable transition/preset helpers
+- Create: `src/emotion/scene-logic.ts`
+- Create: `src/emotion/scene-logic.test.ts` for testable transition/preset helpers
 
 **Interfaces:**
 - Component props: `{ label: EmotionLabel; enabled: boolean; reducedMotion: boolean; quality: QualityPreset }`.

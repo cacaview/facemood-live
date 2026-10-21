@@ -41,4 +41,19 @@ describe("procedural emotion entities", () => {
     entity.dispose();
     expect(disposed.size).toBeGreaterThan(8);
   });
+
+  it("crossfade opacity changes do not trigger material recompilation", () => {
+    const entity = createEmotionEntity("neutral", "low");
+    let materialVersion = -1;
+    entity.object.traverse((child) => {
+      if (child instanceof Mesh) materialVersion = child.material.version;
+    });
+    entity.setOpacity(0.5);
+    let nextVersion = -1;
+    entity.object.traverse((child) => {
+      if (child instanceof Mesh) nextVersion = child.material.version;
+    });
+    expect(nextVersion).toBe(materialVersion);
+    entity.dispose();
+  });
 });

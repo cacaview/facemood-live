@@ -76,7 +76,6 @@ function makeMaterial(
     shader.vertexShader = shader.vertexShader.replace(
       "#include <common>",
       `#include <common>
-       attribute vec2 flowUv;
        varying vec2 vFlowUv;
        uniform sampler2D uFlowMap;
        uniform float uSceneTime;
@@ -85,7 +84,8 @@ function makeMaterial(
     shader.vertexShader = shader.vertexShader.replace(
       "#include <begin_vertex>",
       `#include <begin_vertex>
-       vFlowUv = flowUv;
+       vec4 flowClip = projectionMatrix * modelViewMatrix * vec4(transformed, 1.0);
+       vFlowUv = flowClip.xy / flowClip.w * 0.5 + 0.5;
        vec4 flowSample = texture2D(uFlowMap, vFlowUv);
        transformed += objectNormal * (flowSample.b * 0.07 + sin(uSceneTime + vFlowUv.y * 6.283) * 0.008) * uAgitation;
        transformed.xz += flowSample.rg * 0.035 * uAgitation;`,
@@ -94,22 +94,12 @@ function makeMaterial(
   return material;
 }
 
-function addFlowUv(geometry: BufferGeometry) {
-  const uv = geometry.getAttribute("uv");
-  if (uv)
-    geometry.setAttribute(
-      "flowUv",
-      new BufferAttribute(uv.array.slice(), uv.itemSize),
-    );
-}
-
 function meshFor(
   geometry: BufferGeometry,
   color: string,
   emissive: string,
   opacity: number,
 ) {
-  addFlowUv(geometry);
   return new Mesh(geometry, makeMaterial(color, emissive, opacity));
 }
 
@@ -330,7 +320,6 @@ export function createEmotionEntity(
         const base = material.userData.baseOpacity as number;
         material.opacity = base * opacity;
         material.depthWrite = opacity > 0.98 && base > 0.95;
-        material.needsUpdate = true;
       });
     },
     dispose() {
