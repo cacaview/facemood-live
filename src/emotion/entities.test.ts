@@ -13,6 +13,30 @@ function geometryTypes(label: "neutral" | "happiness" | "anger") {
 }
 
 describe("procedural emotion entities", () => {
+  it("keeps fast crystal disturbances bounded and local to the touched fragments", () => {
+    const entity = createEmotionEntity("anger", "low");
+    entity.update(0, 0, 0);
+    const shards = entity.object.children.filter(
+      (child) => child.userData.basePosition,
+    );
+    const before = shards.map((child) => child.position.clone());
+    const touched = new Vector3(0.74, 0.43, -0.12);
+    entity.object.localToWorld(touched);
+    for (let event = 0; event < 300; event++)
+      entity.onPointerForce(touched, new Vector2(100, 100));
+    entity.update(1 / 60, 0, 0);
+    const distances = shards.map((child, i) =>
+      child.position.distanceTo(before[i]!),
+    );
+    expect(Math.max(...distances)).toBeLessThan(0.06);
+    expect(distances[1]).toBeGreaterThan(0.005);
+    expect(distances[0]).toBeLessThan(0.001);
+    for (let frame = 0; frame < 240; frame++) entity.update(1 / 60, 0, 0);
+    shards.forEach((child, i) =>
+      expect(child.position.distanceTo(before[i]!)).toBeLessThan(0.001),
+    );
+    entity.dispose();
+  });
   it("does not apply the flower core's breathing scale a second time to surface particles", () => {
     const entity = createEmotionEntity("happiness", "low");
     const cloud = entity.object.children.find(
@@ -40,9 +64,12 @@ describe("procedural emotion entities", () => {
       original
         .clone()
         .applyMatrix4((material.uniforms.uParts!.value as Matrix4[])[1]!);
-    entity.onPointerForce(new Vector3(1, 0, 0), new Vector2(3, 0));
+    entity.onPointerForce(
+      entity.object.localToWorld(new Vector3(-0.78, 0.28, 0.08)),
+      new Vector2(3, 0),
+    );
     entity.update(1 / 60, 0, 0);
-    expect(position().distanceTo(original)).toBeGreaterThan(0.01);
+    expect(position().distanceTo(original)).toBeGreaterThan(0.005);
     for (let frame = 0; frame < 240; frame++) entity.update(1 / 60, 0, 0);
     expect(position().distanceTo(original)).toBeLessThan(0.002);
     entity.dispose();
@@ -139,7 +166,10 @@ describe("procedural emotion entities", () => {
     )!;
     const base = shard.userData.basePosition as Vector3;
     const basePositionX = base.x;
-    anger.onPointerForce(new Vector3(1, 0, 0), new Vector2(1, 0));
+    anger.onPointerForce(
+      anger.object.localToWorld(base.clone()),
+      new Vector2(1, 0),
+    );
     anger.update(1 / 60, 0, 0);
     const disturbedPositionX = shard.position.x;
     const shardRotation = shard.rotation.x;

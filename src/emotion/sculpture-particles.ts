@@ -12,6 +12,7 @@ import {
 } from "three";
 import type { Texture } from "three";
 import type { Quality } from "./registry";
+import { INTERACTION } from "./interaction";
 
 export const SCULPTURE_PARTICLES: Record<Quality, number> = {
   low: 4000,
@@ -48,9 +49,13 @@ const deformation = `
       p.z += edge * sin(uTime * 0.6 + length(p.xy) * 2.0) * 0.1 * uMotion;
     }
     vec3 view = (viewMatrix * vec4(p, 1.0)).xyz;
-    view.xy += field.rg * 2.8;
-    view += normalize(normalMatrix * localNormal) * field.b * 0.36;
-    view.z += sin(p.y * 6.0 + p.x * 4.0 + uTime) * field.b * 0.16;
+    vec3 force = vec3(field.rg * ${INTERACTION.surfaceGain.toFixed(3)}, 0.0);
+    force += normalize(normalMatrix * localNormal) * field.b * ${INTERACTION.normalGain.toFixed(3)};
+    force.z += sin(p.y * 6.0 + p.x * 4.0 + uTime) * field.b * ${INTERACTION.depthGain.toFixed(3)};
+    // A final vector cap protects the silhouette even if the simulation saturates.
+    float offsetLimit = ${INTERACTION.maxSurfaceOffset.toFixed(3)} * mix(0.3, 1.0, uMotion);
+    force *= min(1.0, offsetLimit / max(length(force), 0.00001));
+    view += force;
     vEnergy = clamp(field.b * 2.0 + uAgitation * 0.25, 0.0, 1.0);
     return view;
   }

@@ -210,6 +210,14 @@ export function createEmotionEntity(
   let agitation = 0;
   let impulseDirection = new Vector3();
   let opacity = 1;
+  const fragmentForces = new Map<
+    Mesh,
+    { energy: number; direction: Vector3 }
+  >();
+  group.children.forEach((child) => {
+    if (child instanceof Mesh && child.userData.basePosition)
+      fragmentForces.set(child, { energy: 0, direction: new Vector3() });
+  });
   const materials: ShaderMaterial[] = [];
   const geometries: BufferGeometry[] = [];
   group.traverse((child) => {
@@ -278,7 +286,7 @@ export function createEmotionEntity(
         const breath = 1 + Math.sin(time * 1.25) * 0.025;
         group.scale.setScalar(breath);
         group.rotation.y =
-          Math.sin(time * 0.28) * 0.16 + impulseDirection.x * agitation * 0.06;
+          Math.sin(time * 0.28) * 0.16 + impulseDirection.x * agitation * 0.018;
         group.rotation.z = Math.sin(time * 0.38) * 0.025;
         group.children.forEach((child) => {
           if (child.userData.orbit)
@@ -307,13 +315,15 @@ export function createEmotionEntity(
           if (child.userData.basePosition) {
             const base = child.userData.basePosition as Vector3;
             const phase = child.userData.phase as number;
-            const spread = 1 + agitation * 0.2;
+            const force = fragmentForces.get(child as Mesh)!;
+            force.energy *= Math.exp(-4 * step);
+            const spread = 1 + force.energy * 0.04;
             child.position.set(
-              base.x * spread + impulseDirection.x * agitation * 0.08,
+              base.x * spread + force.direction.x * force.energy * 0.05,
               base.y * spread +
                 Math.sin(time * 0.7 + phase) * 0.012 +
-                impulseDirection.y * agitation * 0.08,
-              base.z + impulseDirection.z * agitation * 0.06,
+                force.direction.y * force.energy * 0.05,
+              base.z + force.direction.z * force.energy * 0.05,
             );
             child.rotation.x += step * 0.05 * ambientMotion;
           }
@@ -328,11 +338,26 @@ export function createEmotionEntity(
       });
     },
     onPointerForce(point, velocity) {
-      agitation = Math.min(
-        1.5,
-        agitation + Math.min(velocity.length() * 0.06, 0.7),
-      );
-      impulseDirection = new Vector3(point.x, point.y, point.z).normalize();
+      const local = group.worldToLocal(point.clone());
+      const strength = Math.min(0.45, velocity.length());
+      const bodyDistance = Math.max(0, local.length() - 1.35);
+      const influence = Math.exp((-bodyDistance * bodyDistance) / 0.18);
+      agitation = Math.max(agitation, strength * influence);
+      impulseDirection.copy(local).normalize();
+      const direction = new Vector3(
+        velocity.x,
+        velocity.y,
+        0,
+      ).transformDirection(group.matrixWorld.clone().invert());
+      for (const [mesh, force] of fragmentForces) {
+        const distance = local.distanceTo(
+          mesh.userData.basePosition as Vector3,
+        );
+        const energy =
+          strength * Math.exp((-distance * distance) / (2 * 0.35 * 0.35));
+        force.energy = Math.max(force.energy, energy);
+        if (energy > 0.001) force.direction.copy(direction);
+      }
     },
     setFlowTexture(texture) {
       materials.forEach((material) => {

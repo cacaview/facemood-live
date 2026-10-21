@@ -28,6 +28,7 @@ import type { EmotionLabel } from "./controller";
 import { createEmotionEntity } from "./entities";
 import type { EmotionEntity } from "./entities";
 import { FlowField } from "./flow-field";
+import { INTERACTION } from "./interaction";
 import { EmotionRegistry } from "./registry";
 import type { Quality } from "./registry";
 import { EmotionTransition, QUALITY_PRESETS } from "./scene-logic";
@@ -91,7 +92,7 @@ function createParticleMaterial(
       varying float vAlpha;
       void main() {
         vec4 flow = texture2D(uFlowMap, aFlowUv);
-        vec3 drift = vec3(flow.r, flow.g, 0.0) * 0.24;
+        vec3 drift = vec3(flow.r, flow.g, 0.0) * 0.7;
         drift += vec3(sin(uTime * 0.31 + aPhase), cos(uTime * 0.27 + aPhase * 1.7), 0.0) * 0.045;
         vec4 viewPosition = modelViewMatrix * vec4(position + drift, 1.0);
         gl_Position = projectionMatrix * viewPosition;
@@ -364,10 +365,13 @@ export class EmotionScene {
       Math.max(0, Math.min(1, 1 - (event.clientY - rect.top) / rect.height)),
     );
     const velocity = new Vector2(
-      ((event.clientX - prior.x) / rect.width / (elapsed / 1000)) * 0.32,
-      ((prior.y - event.clientY) / rect.height / (elapsed / 1000)) * 0.32,
+      ((event.clientX - prior.x) / rect.width / (elapsed / 1000)) *
+        INTERACTION.pointerGain,
+      ((prior.y - event.clientY) / rect.height / (elapsed / 1000)) *
+        INTERACTION.pointerGain,
     );
-    if (velocity.length() > 2) velocity.setLength(2);
+    if (velocity.length() > INTERACTION.maxPointerSpeed)
+      velocity.setLength(INTERACTION.maxPointerSpeed);
     this.flow?.splat(uv, velocity);
     this.pointerNdc.set(uv.x * 2 - 1, uv.y * 2 - 1);
     this.raycaster.setFromCamera(this.pointerNdc, this.camera);

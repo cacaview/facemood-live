@@ -6,6 +6,8 @@ import {
   Vector2,
 } from "three";
 
+import { INTERACTION } from "./interaction";
+
 export class FlowField {
   readonly texture: DataTexture;
   private velocityX: Float32Array;
@@ -38,28 +40,30 @@ export class FlowField {
     if (this.disposed) return;
     const x = Math.max(0, Math.min(1, uv.x)) * (this.size - 1);
     const y = Math.max(0, Math.min(1, uv.y)) * (this.size - 1);
-    const radius = Math.max(1, this.size * 0.075);
+    const radius = Math.max(1, this.size * INTERACTION.splatRadius);
     const radius2 = radius * radius;
     const minX = Math.max(0, Math.floor(x - radius * 3));
     const maxX = Math.min(this.size - 1, Math.ceil(x + radius * 3));
     const minY = Math.max(0, Math.floor(y - radius * 3));
     const maxY = Math.min(this.size - 1, Math.ceil(y + radius * 3));
-    const vx = Math.max(-2, Math.min(2, velocity.x));
-    const vy = Math.max(-2, Math.min(2, velocity.y));
+    const gain =
+      INTERACTION.maxPointerSpeed /
+      Math.max(INTERACTION.maxPointerSpeed, velocity.length());
+    const vx = velocity.x * gain;
+    const vy = velocity.y * gain;
     for (let row = minY; row <= maxY; row++) {
       for (let column = minX; column <= maxX; column++) {
         const dx = column - x;
         const dy = row - y;
         const falloff = Math.exp(-(dx * dx + dy * dy) / (2 * radius2));
         const index = row * this.size + column;
-        this.velocityX[index] = Math.max(
-          -2,
-          Math.min(2, this.velocityX[index]! + vx * falloff),
-        );
-        this.velocityY[index] = Math.max(
-          -2,
-          Math.min(2, this.velocityY[index]! + vy * falloff),
-        );
+        const nextX = this.velocityX[index]! + vx * falloff;
+        const nextY = this.velocityY[index]! + vy * falloff;
+        const limit =
+          INTERACTION.maxFieldSpeed /
+          Math.max(INTERACTION.maxFieldSpeed, Math.hypot(nextX, nextY));
+        this.velocityX[index] = nextX * limit;
+        this.velocityY[index] = nextY * limit;
       }
     }
     this.writeTexture();
@@ -68,8 +72,8 @@ export class FlowField {
   step(dt: number): void {
     if (this.disposed) return;
     const safeDt = Math.max(0, Math.min(dt, 0.05));
-    const decay = Math.pow(0.978, safeDt * 60);
-    const mix = 0.16;
+    const decay = Math.exp(-INTERACTION.fieldDecay * safeDt);
+    const mix = 1 - Math.pow(0.88, safeDt * 60);
     for (let y = 0; y < this.size; y++) {
       for (let x = 0; x < this.size; x++) {
         const index = y * this.size + x;
@@ -89,14 +93,10 @@ export class FlowField {
             this.velocityY[up]! +
             this.velocityY[down]!) *
           0.25;
-        this.nextX[index] = Math.max(
-          -2,
-          Math.min(2, (this.velocityX[index]! * (1 - mix) + avgX * mix) * decay),
-        );
-        this.nextY[index] = Math.max(
-          -2,
-          Math.min(2, (this.velocityY[index]! * (1 - mix) + avgY * mix) * decay),
-        );
+        this.nextX[index] =
+          (this.velocityX[index]! * (1 - mix) + avgX * mix) * decay;
+        this.nextY[index] =
+          (this.velocityY[index]! * (1 - mix) + avgY * mix) * decay;
       }
     }
     [this.velocityX, this.nextX] = [this.nextX, this.velocityX];
@@ -140,7 +140,10 @@ export class FlowField {
       const y = this.velocityY[index]!;
       data[offset] = x;
       data[offset + 1] = y;
-      data[offset + 2] = Math.min(1, Math.hypot(x, y) / 2);
+      data[offset + 2] = Math.min(
+        1,
+        Math.hypot(x, y) / INTERACTION.maxFieldSpeed,
+      );
       data[offset + 3] = 1;
     }
     this.texture.needsUpdate = true;
