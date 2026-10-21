@@ -18,3 +18,5 @@ The old field accumulated up to ±2 on each axis (diagonal magnitude ~2.83), and
 New regression tests first reproduced an accumulated field speed of ~2.797 and fragment displacement of ~0.356 units under repeated fast gestures. After the fix, the field stays below 0.18; fragment offsets stay below 0.06, distant fragments below 0.001, and both return to rest. The existing particle attachment regression now targets the touched fragment and checks its deliberately smaller movement.
 
 Vitest: 51 passed. Production TypeScript/build passed. Targeted Playwright mouse drag, touch/cancel/settling/visibility recovery, and high/low/medium quality checks: 3 passed. Both normal and server production builds passed. These checks do not replace physical iPhone/desktop performance acceptance.
+
+Published to the existing HTTPS test URL as `20261021-224046-29a9137e` with unchanged model SHA and server configuration. Public model/sample/caching/permission-recovery/mobile-layout verification passed with no page errors. The previous test release and guarded rollback are retained.

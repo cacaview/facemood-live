@@ -1,3 +1,14 @@
+# Current interaction hotfix — 2026-10-21 22:40 (Asia/Shanghai)
+
+- URL remains https://106.53.199.187:8443/ . Current application source is `29a9137e8a5c0cd44e606ca70e1bfdd2bf778c64`, release `20261021-224046-29a9137e`.
+- Fixes overly strong accumulated pointer disturbance and global crystal-fragment movement. Surface deformation now has a final 0.075-unit vector cap, a smaller local splat, and bounded field speed. See `reports/emotion-interaction-tuning.md`.
+- 51 unit tests and 3 targeted browser interaction/quality cases passed; both builds passed. Public post-deployment checks are recorded in `reports/deployment_verification.json` (including its source version).
+- 5 changed files / 187,192 compressed bytes transferred, 22 unchanged files reused; all 27 files SHA-256 verified. Model SHA is unchanged, and no server configuration/service/GPU change was made. Existing port 443 response status and SHA-256 were preserved.
+- Previous test release `20261021-185308-f71799b9` remains available. Guarded rollback on the server: `python3 /var/backups/facemood/20261021-224046-29a9137e/rollback.py`.
+- The historical public visual-switch report below names source `f71799b9`; the latest targeted interaction checks were performed locally on the hotfix build.
+
+---
+
 # Deployment status — 2026-10-21 (Asia/Shanghai)
 
 - Public test URL: https://106.53.199.187:8443/

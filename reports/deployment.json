@@ -1,18 +1,18 @@
 {
-  "release": "20261021-185308-f71799b9",
-  "source_commit": "f71799b941e01977c01e9d21d91f961bb260e9ed",
+  "release": "20261021-224046-29a9137e",
+  "source_commit": "29a9137e8a5c0cd44e606ca70e1bfdd2bf778c64",
   "model_sha256": "a2a2ba6a335a3b29c21acb6272f962bd3d47f84952aaffa03b60986e04efa61c",
-  "current": "/var/www/facemood/releases/20261021-185308-f71799b9/site",
-  "previous": "/var/www/facemood/releases/20261020-232108-293458eb/site",
-  "backup": "/var/backups/facemood/20261021-185308-f71799b9",
-  "rollback_command": "python3 /var/backups/facemood/20261021-185308-f71799b9/rollback.py",
+  "current": "/var/www/facemood/releases/20261021-224046-29a9137e/site",
+  "previous": "/var/www/facemood/releases/20261021-185308-f71799b9/site",
+  "backup": "/var/backups/facemood/20261021-224046-29a9137e",
+  "rollback_command": "python3 /var/backups/facemood/20261021-224046-29a9137e/rollback.py",
   "port": 8443,
   "url": "https://106.53.199.187:8443/",
   "existing_site": "unchanged status and SHA-256",
   "server_configuration": "unchanged SHA-256; no reload",
   "vllm": "not accessed",
   "verified_files": 27,
-  "archive_sha256": "2c56e7dedba189d51b8a1e21ff142d238c71c457e0ab6880f853d669c5d8dd2d",
+  "archive_sha256": "64f0f46d7fdb80398bed89a07eaba8c75606c809c67a9c8ce9b55a0444321b73",
   "transport": "SHA-256-verified reuse of unchanged server assets; static symlink-only publication",
-  "transferred_bytes": 192247
+  "transferred_bytes": 187192
 }
