@@ -47,3 +47,7 @@ Pause 3D immediately releases the scene while preserving the observation interfa
 
 - [Desktop with the existing local sample and working recognition](emotion-immersive-desktop.png). This is an automated software-rendering screenshot, not a desktop performance pass.
 - [390 px viewport layout](emotion-immersive-mobile.png). This is viewport emulation, not iPhone Safari.
+
+## Subsequent user-authorized server test deployment
+
+On 2026-10-21 the user explicitly requested deployment for other people to test. The earlier no-deployment statement above describes implementation time. Release `20261021-185308-f71799b9` now serves source `f71799b9` at https://106.53.199.187:8443/ using an atomic static symlink switch. Previous release and guarded rollback script were retained; server configuration, existing site and GPU services were unchanged. See [deployment status](deployment_status.md) and machine-readable deployment/verification reports. This deployment does not mark physical-device performance acceptance complete.
