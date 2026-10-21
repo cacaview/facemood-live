@@ -86,6 +86,8 @@ test("real worker loads local models and matches Python ORT fixture", async ({
   await expect(page.locator(".prediction h2")).not.toHaveText("未检测到人脸", {
     timeout: 30000,
   });
+  await expect(page.locator(".emotion-stage-shell")).toHaveAttribute("data-emotion", "happiness", { timeout: 10000 });
+  await expect(page.locator(".emotion-stage-copy h2")).toContainText("开心");
   await expect(page.locator(".source-label")).toContainText("演示素材");
   await page.screenshot({ path: "reports/app-desktop.png", fullPage: true });
 });

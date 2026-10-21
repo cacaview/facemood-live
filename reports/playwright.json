@@ -83,12 +83,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 3607,
+                  "duration": 4679,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-20T15:18:14.068Z",
+                  "startTime": "2026-10-21T08:04:43.732Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -117,12 +117,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 4750,
+                  "duration": 6655,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-20T15:18:17.894Z",
+                  "startTime": "2026-10-21T08:04:48.577Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -151,12 +151,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 3309,
+                  "duration": 4507,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-20T15:18:22.665Z",
+                  "startTime": "2026-10-21T08:04:55.248Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -166,7 +166,7 @@
           ],
           "id": "c31ff144dc4fee3acd0a-55b0555039e3c1278b00",
           "file": "app.spec.ts",
-          "line": 92,
+          "line": 94,
           "column": 1
         },
         {
@@ -185,12 +185,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 5425,
+                  "duration": 6876,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-20T15:18:25.994Z",
+                  "startTime": "2026-10-21T08:04:59.769Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -200,7 +200,7 @@
           ],
           "id": "c31ff144dc4fee3acd0a-43eab45ebb107a5c3775",
           "file": "app.spec.ts",
-          "line": 116,
+          "line": 118,
           "column": 1
         },
         {
@@ -219,12 +219,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 3728,
+                  "duration": 5297,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-20T15:18:31.431Z",
+                  "startTime": "2026-10-21T08:05:06.656Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -234,7 +234,7 @@
           ],
           "id": "c31ff144dc4fee3acd0a-185a054db14b2847693f",
           "file": "app.spec.ts",
-          "line": 158,
+          "line": 160,
           "column": 1
         },
         {
@@ -253,12 +253,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 4907,
+                  "duration": 4944,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-20T15:18:35.172Z",
+                  "startTime": "2026-10-21T08:05:11.969Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -268,7 +268,7 @@
           ],
           "id": "c31ff144dc4fee3acd0a-9980de1e699fcdc84414",
           "file": "app.spec.ts",
-          "line": 196,
+          "line": 198,
           "column": 1
         },
         {
@@ -287,12 +287,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 3271,
+                  "duration": 4607,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-20T15:18:40.093Z",
+                  "startTime": "2026-10-21T08:05:16.925Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -302,7 +302,7 @@
           ],
           "id": "c31ff144dc4fee3acd0a-4d12e20d4fe381b9989a",
           "file": "app.spec.ts",
-          "line": 240,
+          "line": 242,
           "column": 1
         },
         {
@@ -321,12 +321,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 3574,
+                  "duration": 4574,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-20T15:18:43.376Z",
+                  "startTime": "2026-10-21T08:05:21.542Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -336,7 +336,7 @@
           ],
           "id": "c31ff144dc4fee3acd0a-8f13f8eb5cc7022458c2",
           "file": "app.spec.ts",
-          "line": 263,
+          "line": 265,
           "column": 1
         },
         {
@@ -355,12 +355,12 @@
                   "workerIndex": 0,
                   "parallelIndex": 0,
                   "status": "passed",
-                  "duration": 3410,
+                  "duration": 4018,
                   "errors": [],
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2026-10-20T15:18:46.963Z",
+                  "startTime": "2026-10-21T08:05:26.128Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -370,7 +370,253 @@
           ],
           "id": "c31ff144dc4fee3acd0a-3d06c4edd5d8f3f6f3ed",
           "file": "app.spec.ts",
-          "line": 354,
+          "line": 356,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": "emotion-scene.spec.ts",
+      "file": "emotion-scene.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "emotion preview changes visual entities without changing inference controls",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 7443,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-21T08:05:30.171Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04d261cf60bf34398408-40b2953744b17da210fa",
+          "file": "emotion-scene.spec.ts",
+          "line": 14,
+          "column": 1
+        },
+        {
+          "title": "scene pause and reduced motion leave camera and export usable",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3478,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-21T08:05:37.625Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04d261cf60bf34398408-c72a475be9022f62681d",
+          "file": "emotion-scene.spec.ts",
+          "line": 46,
+          "column": 1
+        },
+        {
+          "title": "system reduced-motion preference pauses and resumes the visual cycle",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 8397,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-21T08:05:41.113Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04d261cf60bf34398408-3dc205a11c44120da89b",
+          "file": "emotion-scene.spec.ts",
+          "line": 61,
+          "column": 1
+        },
+        {
+          "title": "pointer drag changes the flow-driven scene while reduced motion is enabled",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3972,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-21T08:05:49.520Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04d261cf60bf34398408-986831a7f2e2ac4bc950",
+          "file": "emotion-scene.spec.ts",
+          "line": 80,
+          "column": 1
+        },
+        {
+          "title": "touch pointer disturbance survives pointer cancellation and scene resize",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4307,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-21T08:05:53.500Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04d261cf60bf34398408-c9e69b24bc210ee96496",
+          "file": "emotion-scene.spec.ts",
+          "line": 114,
+          "column": 1
+        },
+        {
+          "title": "WebGL context loss uses a local fallback and restores the scene",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4256,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-21T08:05:57.817Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04d261cf60bf34398408-f8c246219715e6da4100",
+          "file": "emotion-scene.spec.ts",
+          "line": 297,
+          "column": 1
+        },
+        {
+          "title": "manual visual previews never enter the statistics export",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 809,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-21T08:06:02.082Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "04d261cf60bf34398408-6aa782ce9f11c94485a1",
+          "file": "emotion-scene.spec.ts",
+          "line": 321,
           "column": 1
         }
       ]
@@ -378,9 +624,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-10-20T15:18:12.264Z",
-    "duration": 38230.232,
-    "expected": 9,
+    "startTime": "2026-10-21T08:04:42.078Z",
+    "duration": 80893.57699999999,
+    "expected": 16,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

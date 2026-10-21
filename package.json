@@ -14,15 +14,19 @@
     "prebuild": "node scripts/build_worker.mjs",
     "worker": "node scripts/build_worker.mjs",
     "rollback:baseline": "node scripts/rollback_baseline.mjs && npm run build",
+    "rollback:visual": "node scripts/rollback_visual_baseline.mjs",
+    "test:visual-rollback": "node --test scripts/rollback_visual_baseline.test.mjs",
     "build:server": "node scripts/build_worker.mjs && vue-tsc --noEmit && vite build --base=/ --outDir=dist-server && node scripts/build_retirement_worker.mjs dist-server"
   },
   "dependencies": {
     "@mediapipe/tasks-vision": "0.10.22-rc.20250304",
     "onnxruntime-web": "1.23.2",
+    "three": "0.186.1",
     "vue": "3.5.44"
   },
   "devDependencies": {
     "@playwright/test": "1.56.1",
+    "@types/three": "0.186.0",
     "@vitejs/plugin-vue": "6.0.1",
     "esbuild": "0.25.12",
     "prettier": "3.6.2",

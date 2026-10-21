@@ -1,0 +1,6 @@
+{
+  "sourceRef": "aacb705",
+  "sourceCommit": "aacb7052548d918197d3927cb96a78c524aaf14c",
+  "outputSha256": "5ae730620e6d47c8be05a595e44e7cf74b2c8e8cd318971ad071f42e3674792b",
+  "buildCommand": "npm run build"
+}
