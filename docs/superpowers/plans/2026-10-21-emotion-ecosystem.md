@@ -64,6 +64,7 @@
 **Interfaces:**
 - `EmotionLabel` is the eight-label string union from active.json.
 - `EmotionEntity` exposes `object: THREE.Group`, `update(dt: number, time: number): void`, `onPointerForce(point: THREE.Vector3, velocity: THREE.Vector2): void`, `setOpacity(value: number): void`, and `dispose(): void`.
+- `EmotionEntity.setFlowTexture(texture: THREE.Texture): void` binds the shared flow field texture for surface displacement and particle sampling.
 - `createEmotionEntity(label: 'neutral' | 'happiness' | 'anger', quality: Quality): EmotionEntity` returns separate topology per label.
 - `FlowField` exposes `splat(uv: THREE.Vector2, velocity: THREE.Vector2): void`, `step(dt: number): void`, `sample(uv: THREE.Vector2, out: THREE.Vector2): THREE.Vector2`, and `dispose(): void`.
 - `EmotionRegistry` contains all eight labels with implemented flag, palette, quality hints, and an optional future asset URL/license field.
