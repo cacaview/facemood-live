@@ -1,7 +1,14 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import {
+  ref,
+  computed,
+  onMounted,
+  onBeforeUnmount,
+  defineAsyncComponent,
+} from "vue";
 import {
   labels,
+  modelEmotionLabels,
   displayPrediction,
   smooth,
   smoothBox,
@@ -9,12 +16,27 @@ import {
   type Box,
 } from "./core";
 import { InferenceEngine } from "./engine";
+import { EmotionController } from "./emotion/controller";
+import type { EmotionLabel } from "./emotion/controller";
+import { EmotionRegistry } from "./emotion/registry";
+import type { QualityPreset } from "./emotion/scene-logic";
+import {
+  resolveVisualEmotion,
+  type PrototypeEmotion,
+  type VisualEmotionMode,
+} from "./emotion/presentation";
+import { createThemeTokens } from "./emotion/ThemeTokens";
+
+const EmotionScene = defineAsyncComponent(
+  () => import("./emotion/EmotionScene.vue"),
+);
 const video = ref<HTMLVideoElement>(),
   overlay = ref<HTMLCanvasElement>(),
   image = ref<HTMLImageElement>();
 const appBase = import.meta.env.BASE_URL;
 const engine = new InferenceEngine(),
-  metrics = new RollingMetrics();
+  metrics = new RollingMetrics(),
+  emotionController = new EmotionController();
 const ready = ref(false),
   loading = ref(false),
   running = ref(false),
@@ -38,6 +60,43 @@ const probabilities = ref<number[] | null>(null),
   summary = ref(metrics.summary(performance.now()));
 const trend = ref<{ t: number; p: number }[]>([]),
   raw = ref<number[] | null>(null);
+const detectedEmotion = ref<EmotionLabel>("neutral"),
+  visualMode = ref<VisualEmotionMode>("live"),
+  previewEmotion = ref<PrototypeEmotion>("neutral"),
+  sceneEnabled = ref(true),
+  sceneQuality = ref<QualityPreset>(
+    window.matchMedia("(pointer: coarse)").matches ? "low" : "medium",
+  ),
+  reducedMotion = ref(
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  ),
+  sceneFps = ref(0),
+  sceneFallback = ref("");
+const prototypeEmotions: PrototypeEmotion[] = ["neutral", "happiness", "anger"];
+const prototypeNames: Record<PrototypeEmotion, string> = {
+  neutral: "中性 · 能量核心",
+  happiness: "开心 · 绽放花体",
+  anger: "愤怒 · 熔岩晶体",
+};
+const prototypeDescriptions: Record<PrototypeEmotion, string> = {
+  neutral: "层叠银蓝能量壳稳定呼吸，轻触泛起柔和波纹。",
+  happiness: "金橙与粉紫花瓣缓慢开合，扰动会推动花朵舒展。",
+  anger: "赤红晶体周期收紧，触碰使碎片短暂散开再聚合。",
+};
+const visualEmotion = computed(() =>
+  resolveVisualEmotion(
+    visualMode.value,
+    detectedEmotion.value,
+    previewEmotion.value,
+  ),
+);
+const themeTokens = computed(() => createThemeTokens(visualEmotion.value));
+const remainingEmotionCount = Object.values(EmotionRegistry).filter(
+  (entry) => !entry.implemented,
+).length;
+let visualCycleTimer: number | null = null;
+let motionPreference: MediaQueryList | null = null;
+let visualCycleIndex = 0;
 let stream: MediaStream | null = null,
   token = 0,
   loadPromise: Promise<void> | null = null,
@@ -89,8 +148,35 @@ function clearPrediction() {
   raw.value = null;
   box.value = null;
   faces.value = 0;
+  detectedEmotion.value = "neutral";
+  emotionController.reset(performance.now());
   const c = overlay.value;
   c?.getContext("2d")?.clearRect(0, 0, c.width, c.height);
+}
+function setVisualMode(next: VisualEmotionMode) {
+  visualMode.value = next;
+  if (visualCycleTimer !== null) window.clearInterval(visualCycleTimer);
+  visualCycleTimer = null;
+  if (next === "cycle") {
+    visualCycleIndex = Math.max(0, prototypeEmotions.indexOf(previewEmotion.value));
+    visualCycleTimer = window.setInterval(() => {
+      visualCycleIndex = (visualCycleIndex + 1) % prototypeEmotions.length;
+      previewEmotion.value = prototypeEmotions[visualCycleIndex]!;
+    }, 3500);
+  }
+}
+function selectPreviewEmotion(label: PrototypeEmotion) {
+  if (visualCycleTimer !== null) window.clearInterval(visualCycleTimer);
+  visualCycleTimer = null;
+  previewEmotion.value = label;
+  visualMode.value = "manual";
+}
+function updateMotionPreference(event: MediaQueryListEvent) {
+  reducedMotion.value = event.matches;
+}
+function onSceneReady(fps: number) {
+  sceneFps.value = fps;
+  sceneFallback.value = "";
 }
 function stop() {
   token++;
@@ -304,12 +390,26 @@ async function inferOnce(generation: number) {
   raw.value = r.probabilities;
   if (r.probabilities) {
     const now = performance.now();
+    detectedEmotion.value = emotionController.update({
+      probabilities: r.probabilities,
+      labels: modelEmotionLabels,
+      faces: r.faces,
+      at: now,
+      live: mode.value !== "image",
+    });
     probabilities.value = smooth(probabilities.value, r.probabilities);
     metrics.add(now, now - start, r.detect, r.preprocess, r.classify);
     lastCompleted = now;
     trend.value.push({ t: now, p: Math.max(...probabilities.value!) });
     trend.value = trend.value.filter((v) => now - v.t <= 60000);
   } else {
+    detectedEmotion.value = emotionController.update({
+      probabilities: null,
+      labels: modelEmotionLabels,
+      faces: r.faces,
+      at: performance.now(),
+      live: mode.value !== "image",
+    });
     clearPrediction();
     status.value =
       mode.value === "camera"
@@ -448,6 +548,9 @@ function render(now: number) {
   renderId = requestAnimationFrame(render);
 }
 onMounted(() => {
+  motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  motionPreference.addEventListener("change", updateMotionPreference);
+  reducedMotion.value = motionPreference.matches;
   void load();
   void refreshCameras();
   navigator.mediaDevices?.addEventListener("devicechange", deviceChange);
@@ -457,6 +560,8 @@ onMounted(() => {
   window.addEventListener("offline", connectivity);
 });
 onBeforeUnmount(() => {
+  if (visualCycleTimer !== null) window.clearInterval(visualCycleTimer);
+  motionPreference?.removeEventListener("change", updateMotionPreference);
   cameraEnumeration++;
   navigator.mediaDevices?.removeEventListener("devicechange", deviceChange);
   stop();
@@ -470,7 +575,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="app">
+  <div class="app" :style="themeTokens">
     <header>
       <a class="brand" :href="appBase" aria-label="FaceMood 首页"
         ><span class="brand-icon" aria-hidden="true"
@@ -500,6 +605,73 @@ onBeforeUnmount(() => {
       >
     </section>
     <main>
+      <section class="panel emotion-ecosystem" aria-labelledby="emotion-scene-title">
+        <div class="panel-heading">
+          <span id="emotion-scene-title">情绪生态 · 交互式 3D 视觉</span>
+          <span class="emotion-scene-status" aria-live="polite">
+            {{ sceneFallback ? "渐变后备" : sceneFps ? `3D ${sceneFps} FPS` : "WebGL2 场景启动中" }}
+          </span>
+        </div>
+        <div class="emotion-stage-shell" :data-emotion="visualEmotion">
+          <EmotionScene
+            v-if="sceneEnabled"
+            :label="visualEmotion"
+            :enabled="true"
+            :quality="sceneQuality"
+            :reduced-motion="reducedMotion"
+            @ready="onSceneReady"
+            @fallback="sceneFallback = $event; sceneFps = 0"
+          />
+          <div v-else class="emotion-scene-fallback" aria-live="polite">
+            3D 画面已暂停，摄像头与识别仍可继续使用。
+          </div>
+          <div class="emotion-stage-copy">
+            <span class="emotion-kicker">LIVE EMOTION ENTITY</span>
+            <h2>{{ prototypeNames[visualEmotion] }}</h2>
+            <p>{{ prototypeDescriptions[visualEmotion] }}</p>
+            <span class="emotion-disclaimer">表情视觉隐喻 · 不代表内在心理状态</span>
+          </div>
+        </div>
+        <div class="emotion-controls">
+          <div class="emotion-mode-controls" aria-label="视觉模式">
+            <button :aria-pressed="visualMode === 'live'" @click="setVisualMode('live')">
+              跟随识别
+            </button>
+            <button :aria-pressed="visualMode === 'cycle'" @click="setVisualMode('cycle')">
+              三形态轮播
+            </button>
+            <button
+              v-for="emotion in prototypeEmotions"
+              :key="emotion"
+              :aria-pressed="visualMode === 'manual' && previewEmotion === emotion"
+              @click="selectPreviewEmotion(emotion)"
+            >
+              {{ prototypeNames[emotion] }}
+            </button>
+          </div>
+          <div class="emotion-quality-controls">
+            <label>
+              画质
+              <select v-model="sceneQuality" aria-label="3D 画质">
+                <option value="low">低 · 1000 粒子</option>
+                <option value="medium">中 · 3000 粒子</option>
+                <option value="high">高 · 8000 粒子</option>
+              </select>
+            </label>
+            <label class="emotion-reduced-motion">
+              <input v-model="reducedMotion" type="checkbox" />
+              减少动态效果
+            </label>
+            <button @click="sceneEnabled = !sceneEnabled">
+              {{ sceneEnabled ? "暂停 3D" : "恢复 3D" }}
+            </button>
+          </div>
+        </div>
+        <p class="emotion-prototype-note">
+          首阶段已实现 3 / 8 种形态；其余 {{ remainingEmotionCount }} 类暂以中性静态形态呈现，待真机性能与交互验收后扩展。
+          {{ sceneFallback }}
+        </p>
+      </section>
       <section class="viewer panel">
         <div class="panel-heading">
           <span

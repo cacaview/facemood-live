@@ -32,7 +32,10 @@ onMounted(async () => {
       props.quality,
       props.reducedMotion,
       {
-        ready: (fps) => emit("ready", fps),
+        ready: (fps) => {
+          errorMessage.value = "";
+          emit("ready", fps);
+        },
         fallback: (message) => {
           errorMessage.value = message;
           emit("fallback", message);
@@ -63,7 +66,7 @@ onBeforeUnmount(() => {
 <template>
   <div ref="host" class="emotion-scene-host" :class="{ 'has-fallback': errorMessage }">
     <canvas ref="canvas" class="emotion-scene-canvas" aria-label="可交互的三维情绪形态" />
-    <div v-if="errorMessage" class="emotion-scene-fallback" role="status">
+    <div v-if="errorMessage" class="emotion-scene-fallback" aria-live="polite">
       {{ errorMessage }}
     </div>
   </div>

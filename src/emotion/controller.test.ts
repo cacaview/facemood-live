@@ -78,6 +78,24 @@ describe("EmotionController", () => {
     expect(controller.update(input(3201, null, { faces: 1 }))).toBe("neutral");
   });
 
+  it("selects a confident class from a one-shot image without repeated frames", () => {
+    const controller = new EmotionController();
+    expect(controller.update(input(500, "happiness", { live: false }))).toBe("happiness");
+  });
+
+  it("keeps a one-shot low-confidence image in neutral idle", () => {
+    const controller = new EmotionController();
+    expect(
+      controller.update(
+        input(500, null, {
+          live: false,
+          faces: 1,
+          probabilities: labels.map(() => 1 / labels.length),
+        }),
+      ),
+    ).toBe("neutral");
+  });
+
   it("resets malformed probability input safely", () => {
     const controller = new EmotionController({ emaAlpha: 1 });
     controller.update(input(0, "neutral"));

@@ -104,7 +104,11 @@
 - Modify: `src/App.vue`
 - Modify: `src/style.css`
 - Create: `src/emotion/ThemeTokens.ts`
-- Modify: `src/App` tests only if a suitable existing suite exists
+- Create: `src/emotion/presentation.ts`
+- Test: `src/emotion/presentation.test.ts`
+- Test: `src/emotion/label-contract.test.ts`
+- Modify: `tests/e2e/app.spec.ts`
+- Create: `tests/e2e/emotion-scene.spec.ts`
 
 **Interfaces:**
 - Lazy-load the scene component; props read from the existing probabilities/raw result, face count, and selected preview emotion.

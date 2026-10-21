@@ -8,6 +8,16 @@ export const labels = [
   "恐惧",
   "轻蔑",
 ];
+export const modelEmotionLabels = [
+  "neutral",
+  "happiness",
+  "surprise",
+  "sadness",
+  "anger",
+  "disgust",
+  "fear",
+  "contempt",
+] as const;
 export type Box = { x: number; y: number; width: number; height: number };
 export function softmax(scores: ArrayLike<number>): number[] {
   const xs = Array.from(scores);

@@ -95,6 +95,28 @@ export class EmotionController {
     if (labelsChanged) {
       this.reset(at);
     }
+
+    if (!live) {
+      let topIndex = 0;
+      for (let index = 1; index < probabilities.length; index++)
+        if (probabilities[index]! > probabilities[topIndex]!) topIndex = index;
+      const label = labels[topIndex] as EmotionLabel;
+      const confidence = probabilities[topIndex]!;
+      const neutralIndex = labels.indexOf("neutral");
+      const neutralConfidence = neutralIndex >= 0 ? probabilities[neutralIndex]! : 0;
+      this.reset(at);
+      this.labels = [...labels];
+      this.smoothed = Array.from(probabilities);
+      this.lastValidAt = at;
+      if (
+        confidence >= this.config.enterConfidence &&
+        confidence - neutralConfidence >= this.config.lead
+      ) {
+        this.active = label;
+      }
+      return this.active;
+    }
+
     this.labels = [...labels];
     this.lastValidAt = at;
     const next = Array.from(probabilities);
